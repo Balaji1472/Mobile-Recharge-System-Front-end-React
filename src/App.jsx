@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import { BrowserRouter, useLocation } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import './index.css';
-import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
-import Toast from './components/Toast/Toast';
-import AppRoutes from './routes/AppRoutes';
+import React, { useState } from "react";
+import { BrowserRouter, useLocation } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
+import "./index.css";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
+import Toast from "./components/Toast/Toast";
+import AppRoutes from "./routes/AppRoutes";
 
 function AppShell() {
   const location = useLocation();
-  const isAdmin  = location.pathname.startsWith('/admin');
-  const isRecharge = location.pathname.startsWith('/recharge');
+  const isAdmin = location.pathname.startsWith("/admin");
+  const isRecharge = location.pathname.startsWith("/recharge");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Define logic to hide footer
+  const shouldShowFooter = !isAdmin && !isRecharge;
 
   return (
     <>
@@ -20,12 +23,19 @@ function AppShell() {
         onSidebarToggle={() => setSidebarOpen((o) => !o)}
         sidebarOpen={sidebarOpen}
       />
-      <AppRoutes sidebarOpen={sidebarOpen} onSidebarClose={() => setSidebarOpen(false)} />
-      {(!isAdmin || !isRecharge) && <Footer />}
+      <AppRoutes
+        sidebarOpen={sidebarOpen}
+        onSidebarClose={(val) => setSidebarOpen(val ?? false)}
+      />
+      {/* Footer only shows if it is NEITHER admin NOR recharge */}
+      {shouldShowFooter && <Footer />}
       <Toast />
       {/* Overlay — closes sidebar when tapping outside on mobile */}
       {isAdmin && sidebarOpen && (
-        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
     </>
   );

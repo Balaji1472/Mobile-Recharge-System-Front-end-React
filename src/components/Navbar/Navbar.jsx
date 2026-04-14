@@ -11,9 +11,12 @@ export default function Navbar() {
   const { showToast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  
   const dropdownRef = useRef(null);
+  const navRef = useRef(null); // Ref for the whole nav to detect outside clicks
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -28,23 +31,24 @@ export default function Navbar() {
     setDropdownOpen(false);
   };
 
-  // Close dropdown when clicking outside
+  // Close BOTH dropdown and mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {
+      // Close profile dropdown if clicking outside it
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
+      // Close mobile hamburger menu if clicking outside the nav area
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const initials = user?.fullName
-    ? user.fullName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
-    : 'U';
-
   return (
-    <header className="site-header">
+    <header className="site-header" ref={navRef}>
       <nav className="navbar navbar-expand-lg navbar-light bg-white" id="mainNavbar-wrapper">
         <div className="container-fluid px-4 px-lg-5">
 
@@ -64,7 +68,8 @@ export default function Navbar() {
           </button>
 
           <div className={`collapse navbar-collapse ${menuOpen ? 'show' : ''}`} id="mainNavbar">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            {/* Added text-center for mobile alignment */}
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
               <li className="nav-item">
                 <Link to="/" className={isActive('/')} onClick={() => setMenuOpen(false)}>Home</Link>
               </li>
@@ -82,9 +87,8 @@ export default function Navbar() {
               </li>
             </ul>
 
-            <div className="header-auth d-flex align-items-center gap-2 mt-3 mt-lg-0 ms-lg-3">
+            <div className="header-auth d-flex flex-column flex-lg-row align-items-center gap-2 mt-3 mt-lg-0 ms-lg-3">
               {user ? (
-                /* ── Profile dropdown ── */
                 <div className="nav-profile-wrap" ref={dropdownRef}>
                   <button
                     className="nav-profile-btn"
@@ -94,9 +98,10 @@ export default function Navbar() {
                     <div className="user-avatar">
                       <i className="fa-solid fa-user"></i>
                     </div>
-                    {isAdmin && (
-                      <span className="nav-profile-name d-none d-lg-inline">Admin</span>
-                    )}
+                    {/* Always show name/role in mobile for better UX */}
+                    <span className="nav-profile-name">
+                      {isAdmin ? 'Admin' : (user.fullName || 'User')}
+                    </span>
                     <i className={`fa-solid fa-chevron-down nav-chevron ${dropdownOpen ? 'open' : ''}`}></i>
                   </button>
 
@@ -129,18 +134,17 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                <>
+                <div className="d-flex gap-2">
                   <Link to="/login" onClick={() => setMenuOpen(false)}>
                     <button className="btn-auth btn-login">Login</button>
                   </Link>
                   <Link to="/register" onClick={() => setMenuOpen(false)}>
                     <button className="btn-auth btn-register">Register</button>
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </div>
-
         </div>
       </nav>
     </header>

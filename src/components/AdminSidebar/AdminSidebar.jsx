@@ -20,7 +20,6 @@ export default function AdminSidebar({ isOpen, onClose }) {
   const dispatch      = useDispatch();
   const { showToast } = useToast();
   const { user }      = useSelector((state) => state.auth);
-  // Desktop collapse state (independent of mobile open/close)
   const [collapsed, setCollapsed] = useState(false);
 
   const grouped  = groupPages(ADMIN_PAGES);
@@ -30,12 +29,11 @@ export default function AdminSidebar({ isOpen, onClose }) {
     dispatch(logout());
     showToast('Logged out successfully');
     navigate('/');
-    onClose?.();
+    onClose?.(false);
   };
 
   const handleNavClick = () => {
-    // On mobile, close sidebar after navigation
-    onClose?.();
+    if (window.innerWidth <= 992) onClose?.(false);
   };
 
   const initials = user?.fullName
@@ -43,77 +41,80 @@ export default function AdminSidebar({ isOpen, onClose }) {
     : 'A';
 
   return (
-    <aside className={`admin-sidebar ${collapsed ? 'sidebar-collapsed' : ''} ${isOpen ? 'sidebar-mobile-open' : ''}`}>
+    <>
+      {/* ── Mobile Sidebar Puller ── */}
+      {!isOpen && (
+        <button 
+          className="mobile-pull-handle d-lg-none" 
+          onClick={() => onClose(true)} 
+          aria-label="Open Sidebar"
+        >
+          <i className="fa-solid fa-chevron-right"></i>
+        </button>
+      )}
 
-      {/* ── Header ── */}
-      <div className="sidebar-header">
-        <div className="sidebar-brand">
+      <aside className={`admin-sidebar ${collapsed ? 'sidebar-collapsed' : ''} ${isOpen ? 'sidebar-mobile-open' : ''}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-brand">
+            {!collapsed && (
+              <div className="sidebar-panel-label">
+                <span>Admin Panel</span>
+                <small>Manage your platform</small>
+              </div>
+            )}
+            
+            <button
+              className="sidebar-toggle d-none d-lg-flex"
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`}></i>
+            </button>
+
+            <button
+              className="sidebar-toggle d-lg-none"
+              onClick={() => onClose(false)}
+            >
+              <i className="fa-solid fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <nav className="sidebar-nav">
+          {Object.entries(grouped).map(([group, pages]) => (
+            <div className="sidebar-group" key={group}>
+              {!collapsed && <span className="sidebar-group-label">{group}</span>}
+              {pages.map((page) => (
+                <Link
+                  key={page.id}
+                  to={page.href}
+                  className={`sidebar-item ${isActive(page.href) ? 'sidebar-item--active' : ''}`}
+                  onClick={handleNavClick}
+                >
+                  <i className={`fa-solid ${page.icon} sidebar-item-icon`}></i>
+                  {!collapsed && <span className="sidebar-item-label">{page.label}</span>}
+                  {isActive(page.href) && <span className="sidebar-active-bar"></span>}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </nav>
+
+        <div className="sidebar-footer">
           {!collapsed && (
-            <div className="sidebar-panel-label">
-              <span>Admin Panel</span>
-              <small>Manage your platform</small>
+            <div className="sidebar-user-mini">
+              <div className="sidebar-avatar">{initials}</div>
+              <div className="sidebar-user-info">
+                <span className="sidebar-user-name">{user?.fullName?.split(' ')[0] || 'Admin'}</span>
+                <span className="sidebar-user-role">{user?.role || 'ADMIN'}</span>
+              </div>
             </div>
           )}
-          {/* Desktop collapse toggle */}
-          <button
-            className="sidebar-toggle d-none d-lg-flex"
-            onClick={() => setCollapsed(!collapsed)}
-            title={collapsed ? 'Expand' : 'Collapse'}
-          >
-            <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`}></i>
-          </button>
-          {/* Mobile close button */}
-          <button
-            className="sidebar-toggle d-lg-none"
-            onClick={onClose}
-            title="Close sidebar"
-          >
-            <i className="fa-solid fa-xmark"></i>
+          <button className="sidebar-logout" onClick={handleLogout}>
+            <i className="fa-solid fa-right-from-bracket"></i>
+            {!collapsed && <span>Logout</span>}
           </button>
         </div>
-      </div>
-
-      {/* ── Nav ── */}
-      <nav className="sidebar-nav">
-        {Object.entries(grouped).map(([group, pages]) => (
-          <div className="sidebar-group" key={group}>
-            {!collapsed && (
-              <span className="sidebar-group-label">{group}</span>
-            )}
-            {pages.map((page) => (
-              <Link
-                key={page.id}
-                to={page.href}
-                className={`sidebar-item ${isActive(page.href) ? 'sidebar-item--active' : ''}`}
-                title={collapsed ? page.label : undefined}
-                onClick={handleNavClick}
-              >
-                <i className={`fa-solid ${page.icon} sidebar-item-icon`}></i>
-                {!collapsed && <span className="sidebar-item-label">{page.label}</span>}
-                {isActive(page.href) && <span className="sidebar-active-bar"></span>}
-              </Link>
-            ))}
-          </div>
-        ))}
-      </nav>
-
-      {/* ── Footer ── */}
-      <div className="sidebar-footer">
-        {!collapsed && (
-          <div className="sidebar-user-mini">
-            <div className="sidebar-avatar">{initials}</div>
-            <div className="sidebar-user-info">
-              <span className="sidebar-user-name">{user?.fullName?.split(' ')[0] || 'Admin'}</span>
-              <span className="sidebar-user-role">{user?.role || 'ADMIN'}</span>
-            </div>
-          </div>
-        )}
-        <button className="sidebar-logout" onClick={handleLogout} title="Logout">
-          <i className="fa-solid fa-right-from-bracket"></i>
-          {!collapsed && <span>Logout</span>}
-        </button>
-      </div>
-
-    </aside>
+      </aside>
+    </>
   );
 }
