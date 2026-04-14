@@ -1,0 +1,87 @@
+/* ============================================================
+   FOOTER
+============================================================ */
+.site-footer {
+  background: #1a1a1a;
+  color: #ccc;
+  padding-top: 50px;
+}
+
+.footer-top { padding-bottom: 30px; }
+
+.brand-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.brand-name span { color: var(--red); }
+
+.brand-tag {
+  font-size: 0.88rem;
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.social-links { display: flex; gap: 12px; }
+.social-links a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #444;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.social-links a:hover { border-color: var(--red); color: var(--red); }
+
+.links-head {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-ul { list-style: none; padding: 0; margin: 0; }
+.footer-ul li { margin-bottom: 10px; }
+.footer-ul li a {
+  font-size: 0.88rem;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-ul li a:hover { color: var(--red); }
+
+.back-to-top-btn {
+  background: transparent;
+  border: 1.5px solid #444;
+  color: #aaa;
+  border-radius: var(--radius-pill);
+  padding: 9px 22px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+.back-to-top-btn:hover { border-color: var(--red); color: var(--red); }
+
+.footer-divider { border-color: #333; margin: 0; }
+
+.footer-bottom { padding: 18px 0; }
+
+.copyright { font-size: 0.82rem; color: #777; }
+
+.footer-legal { display: flex; gap: 20px; justify-content: flex-end; flex-wrap: wrap; }
+.footer-legal a { font-size: 0.82rem; color: #777; text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: var(--red); }
+
+@media (max-width: 768px) {
+  .footer-legal { justify-content: center; }
+}

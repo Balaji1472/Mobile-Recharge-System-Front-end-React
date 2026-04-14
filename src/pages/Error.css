@@ -1,0 +1,41 @@
+.error-page {
+  min-height: calc(100vh - 60px - 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6fb;
+  padding: 2rem 1rem;
+}
+
+.error-page__content {
+  text-align: center;
+  max-width: 440px;
+}
+
+.error-page__code {
+  font-size: 7rem;
+  font-weight: 900;
+  color: #e94560;
+  line-height: 1;
+  margin: 0 0 0.5rem;
+}
+
+.error-page__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.75rem;
+}
+
+.error-page__message {
+  color: #666;
+  font-size: 1rem;
+  margin: 0 0 2rem;
+}
+
+.error-page__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

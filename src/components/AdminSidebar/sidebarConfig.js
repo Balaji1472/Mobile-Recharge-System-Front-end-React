@@ -1,0 +1,18 @@
+export const ADMIN_PAGES = [
+  { id: 'view-profile',       label: 'Profile',            icon: 'fa-user-circle',       href: '/admin/profile',           group: 'Dashboard' },
+  { id: 'analytics',          label: 'Analytics',          icon: 'fa-chart-line',        href: '/admin/analytics',         group: 'Dashboard' },
+  { id: 'all-users',          label: 'All Users',          icon: 'fa-users',             href: '/admin/all-users',         group: 'User Management' },
+  { id: 'user-roles',         label: 'User Roles',         icon: 'fa-user-shield',       href: '/admin/user-roles',        group: 'User Management' },
+  { id: 'all-plans',          label: 'All Plans',          icon: 'fa-layer-group',       href: '/admin/all-plans',         group: 'Plan Management' },
+  { id: 'create-plan',        label: 'Create New Plan',    icon: 'fa-plus',              href: '/admin/create-plan',       group: 'Plan Management' },
+  { id: 'plan-categories',    label: 'Plan Categories',    icon: 'fa-tags',              href: '/admin/plan-categories',   group: 'Plan Management' },
+  { id: 'operator-plans',     label: 'Operator Plans',     icon: 'fa-link',              href: '/admin/operator-plans',    group: 'Operators' },
+  { id: 'manage-operators',   label: 'Manage Operators',   icon: 'fa-tower-broadcast',   href: '/admin/manage-operators',  group: 'Operators' },
+  { id: 'all-transactions',   label: 'All Transactions',   icon: 'fa-receipt',           href: '/admin/all-transactions',  group: 'Transactions' },
+  { id: 'refunds',            label: 'Refunds',            icon: 'fa-rotate-left',       href: '/admin/refunds',           group: 'Transactions' },
+  { id: 'active-offers',      label: 'Active Offers',      icon: 'fa-gift',              href: '/admin/active-offers',     group: 'Offers' },
+  { id: 'create-offer',       label: 'Create Offer',       icon: 'fa-circle-plus',       href: '/admin/create-offer',      group: 'Offers' },
+  { id: 'offer-mapping',      label: 'Plan-Offer Mapping', icon: 'fa-code-branch',       href: '/admin/offer-mapping',     group: 'Offers' },
+  { id: 'audit-logs',         label: 'Audit Logs',         icon: 'fa-clipboard-list',    href: '/admin/audit-logs',        group: 'System Logs' },
+  { id: 'notifications',      label: 'Notifications',      icon: 'fa-bell',              href: '/admin/notifications',     group: 'System Logs' },
+];

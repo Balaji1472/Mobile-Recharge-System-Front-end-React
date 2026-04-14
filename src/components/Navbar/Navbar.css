@@ -1,0 +1,169 @@
+/* ============================================================
+   NAVBAR
+============================================================ */
+.site-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+
+.logo-img { height: 52px; object-fit: contain; }
+
+.header-nav-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text) !important;
+  padding: 6px 14px !important;
+  transition: color 0.2s;
+  position: relative;
+}
+.header-nav-link:hover { color: var(--red-dark) !important; }
+.header-nav-link.active-link { color: var(--red-dark) !important; font-weight: 700; }
+
+.btn-auth {
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 8px 22px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+.btn-login {
+  background: transparent;
+  border: 2px solid var(--red);
+  color: var(--red);
+}
+.btn-login:hover { background: var(--red); color: white; }
+.btn-register {
+  background: var(--red);
+  color: white;
+  border: 2px solid var(--red);
+}
+.btn-register:hover { background: var(--red-dark); border-color: var(--red-dark); }
+
+.btn-logout {
+  background: transparent;
+  border: 2px solid #ccc;
+  color: var(--text);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+.btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+.user-greeting {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  background: var(--red);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+  .header-auth { padding: 12px 0; border-top: 1px solid var(--border-light); margin-top: 4px; }
+}
+
+.nav-toggle-icon { font-size: 1.2rem; color: var(--text); }
+
+/* ============================================================
+   PROFILE DROPDOWN
+============================================================ */
+.nav-profile-wrap {
+  position: relative;
+}
+
+.nav-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  padding: 4px 6px;
+  border-radius: 50px;
+  transition: background 0.2s;
+}
+.nav-profile-btn:hover { background: var(--pink-bg); }
+
+.nav-profile-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.nav-chevron {
+  font-size: 0.65rem;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.nav-chevron.open { transform: rotate(180deg); }
+
+/* Dropdown card */
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 2000;
+  animation: dropDown 0.18s ease;
+  border: 1px solid var(--border-light);
+}
+
+@keyframes dropDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.15s;
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font);
+  text-align: left;
+}
+.nav-dropdown-item:hover { background: var(--pink-bg); color: var(--text); }
+.nav-dropdown-item i { color: var(--muted); font-size: 0.9rem; width: 16px; text-align: center; }
+
+.nav-dropdown-logout {
+  color: var(--red);
+  background: #fff8f8;
+}
+.nav-dropdown-logout:hover { background: #fff0f0; }
+.nav-dropdown-logout i { color: var(--red); }

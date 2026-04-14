@@ -1,0 +1,152 @@
+.hero-section { background: var(--white); }
+
+.hero-top {
+  background: var(--white);
+  padding: 48px 0 32px;
+}
+
+.hero-bottom {
+  background: var(--pink-bg);
+  padding: 40px 0 48px;
+}
+
+/* Operator Carousel */
+.op-slide {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding: 20px 0;
+  max-width: 900px;
+  margin: auto;
+}
+
+.op-content { max-width: 420px; }
+
+.op-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.op-desc {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.op-img {
+  object-fit: contain;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .op-slide {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 20px;
+  }
+  .op-img { height: 120px; }
+  .op-title { font-size: 1.5rem; }
+}
+
+/* Controls */
+.op-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.op-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid #ccc;
+  background: var(--white);
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+.op-btn:hover { border-color: var(--red); color: var(--red); }
+
+.op-dots-wrap { display: flex; gap: 8px; }
+
+.op-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.op-dot.active { background: var(--red); transform: scale(1.3); }
+
+/* Recharge Card */
+.recharge-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px 36px;
+  max-width: 560px;
+  margin: 0 ;
+  box-shadow: var(--shadow-md);
+}
+
+.recharge-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.recharge-field { margin-bottom: 16px; }
+
+.recharge-field input,
+.recharge-field select {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  font-family: var(--font);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color: var(--text);
+}
+.recharge-field input:focus,
+.recharge-field select:focus { border-color: var(--red); }
+
+.field-error-sm {
+  color: var(--red-brand);
+  font-size: 0.78rem;
+  display: block;
+  margin-top: 4px;
+}
+
+.btn-proceed {
+  width: 100%;
+  padding: 13px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  font-family: var(--font);
+}
+.btn-proceed:hover { background: var(--red-dark); transform: translateY(-1px); }
+.btn-proceed:active { transform: translateY(0); }
+
+@media (max-width: 576px) {
+  .recharge-card { padding: 24px 18px; }
+}

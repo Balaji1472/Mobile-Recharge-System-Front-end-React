@@ -1,0 +1,41 @@
+/* Desktop: fixed height split, overflow hidden on the page */
+@media (min-width: 992px) {
+  /* Hide the global Navbar's bottom margin and stop body scroll */
+  body:has(.recharge-split-wrapper) {
+    overflow: hidden;
+  }
+
+  .recharge-split-wrapper {
+    height: calc(100vh - 70px);
+  }
+
+  .recharge-split-wrapper .row {
+    height: 100%;
+  }
+
+  /* Left panel fills the height */
+  .recharge-split-wrapper .col-lg-4,
+  .recharge-split-wrapper .col-xl-3 {
+    height: 100%;
+  }
+
+  /* Right panel scrolls independently */
+  .recharge-scroll-panel {
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: #fff5f6;
+  }
+}
+
+/* Mobile / Tablet: normal page flow */
+@media (max-width: 991.98px) {
+  .recharge-split-wrapper {
+    height: auto;
+  }
+
+  .recharge-scroll-panel {
+    height: auto;
+    overflow-y: visible;
+    background: #fff5f6;
+  }
+}

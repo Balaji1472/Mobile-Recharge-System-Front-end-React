@@ -1,0 +1,38 @@
+:root {
+  --red: #f05a5a;
+  --red-dark: #e03131;
+  --red-brand: #e41b23;
+  --pink-bg: #f9eded;
+  --white: #ffffff;
+  --text: #1a1a1a;
+  --muted: #888;
+  --muted-2: #666;
+  --border: #e8d8d8;
+  --border-light: #f0f0f0;
+  --radius-card: 16px;
+  --radius-pill: 100px;
+  --shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.05);
+  --font: 'Poppins', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--pink-bg);
+}
+
+a { text-decoration: none; }
+
+/* ── Sidebar mobile overlay ── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  top: var(--navbar-h);
+  background: rgba(0,0,0,0.45);
+  z-index: 899;
+  animation: fadein 0.2s ease;
+}
+@keyframes fadein { from { opacity:0; } to { opacity:1; } }

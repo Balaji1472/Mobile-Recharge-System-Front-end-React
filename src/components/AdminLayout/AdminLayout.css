@@ -1,0 +1,40 @@
+/* ============================================================
+   ADMIN LAYOUT
+============================================================ */
+.admin-layout {
+  display: flex;
+  background: var(--pink-bg);
+  min-height: calc(100vh - var(--navbar-h));
+}
+
+.admin-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 32px;
+  transition: margin-left 0.25s ease;
+  min-height: calc(100vh - var(--navbar-h));
+  overflow-x: hidden;
+}
+
+/* Collapsed desktop sidebar */
+.admin-sidebar.sidebar-collapsed + .admin-content,
+.admin-sidebar.sidebar-collapsed ~ * .admin-content {
+  margin-left: 68px;
+}
+
+/* Overlay for mobile */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  top: var(--navbar-h);
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 899;
+}
+
+@media (max-width: 992px) {
+  /* On mobile, content always takes full width — sidebar overlays */
+  .admin-content {
+    margin-left: 0 !important;
+    padding: 20px 16px;
+  }
+}

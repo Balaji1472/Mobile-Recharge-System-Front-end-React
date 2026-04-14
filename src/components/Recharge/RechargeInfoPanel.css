@@ -1,0 +1,46 @@
+/* ============================================================
+   STICKY INFO PANEL (Left Column — Desktop Only)
+============================================================ */
+.sticky-info-panel {
+  background: #db6161;
+  color: white;
+  padding: 60px 45px;
+  display: flex;
+  align-items: center;
+  /* height is set by the page layout via CSS variable */
+  height: var(--panel-height, calc(100vh - 70px));
+}
+
+.info-content h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.benefit-list li {
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.benefit-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: white;
+}
+
+@media (max-width: 1199.98px) {
+  .info-content h1   { font-size: 34px; }
+  .benefit-list li   { font-size: 16px; }
+  .sticky-info-panel { padding: 50px 35px; }
+}
