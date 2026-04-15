@@ -1,33 +1,47 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import api from '../../api/axios'; 
 import AdminLayout from '../../components/AdminLayout/AdminLayout';
 import './AdminProfilePage.css';
 
-// Backend sends gender as "MALE" / "FEMALE" / "OTHER" — format for display
 function formatGender(gender) {
   if (!gender) return '—';
   return gender.charAt(0).toUpperCase() + gender.slice(1).toLowerCase();
 }
 
-// Map display value back to backend enum value for the select
 const GENDER_OPTIONS = [
-  { label: 'Male',             value: 'MALE' },
-  { label: 'Female',           value: 'FEMALE' },
-  { label: 'Other',            value: 'OTHER' },
-  { label: 'Prefer not to say',value: 'PREFER_NOT_TO_SAY' },
+  { label: 'Male',              value: 'MALE' },
+  { label: 'Female',            value: 'FEMALE' },
+  { label: 'Other',             value: 'OTHER' },
+  { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
 ];
 
 export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { user: reduxUser } = useSelector((state) => state.auth);
+  
+  // Local state to handle the data shown on the page
+  const [user, setUser] = useState(reduxUser);
   const [showModal, setShowModal] = useState(false);
-
-  const [form, setForm] = useState({
-    fullName:     user?.fullName     || '',
-    email:        user?.email        || '',
-    mobileNumber: user?.mobileNumber || '',
-    gender:       user?.gender       || '',   // stored as "MALE" / "FEMALE" etc.
-  });
+  const [form, setForm] = useState({ fullName: '', gender: '' });
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // 1. Fetch latest profile data from Backend on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get('/auth/profile');
+        setUser(res.data);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const initials = user?.fullName
     ? user.fullName.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
@@ -35,28 +49,50 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+  const openModal = () => {
+    setForm({ fullName: user?.fullName || '', gender: user?.gender || '' });
+    setShowModal(true);
+  };
+
+  // 2. PUT request to update profile
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
-    // TODO: dispatch updateProfile thunk
-    setTimeout(() => {
-      setSaving(false);
+    try {
+      const res = await api.put('/auth/profile', {
+        fullName: form.fullName,
+        gender: form.gender
+      });
+
+      // Update local state with updated user data
+      setUser(res.data); 
+      
       setShowModal(false);
-    }, 800);
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
+
+  if (loading && !user) {
+    return (
+      <AdminLayout sidebarOpen={sidebarOpen} onSidebarClose={onSidebarClose}>
+        <div className="ap-page">Loading...</div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout sidebarOpen={sidebarOpen} onSidebarClose={onSidebarClose}>
       <div className="ap-page">
-
         <div className="ap-header">
           <h1 className="ap-title">Profile</h1>
           <p className="ap-subtitle">View and manage your account details</p>
         </div>
 
         <div className="ap-card">
-
-          {/* Avatar + name */}
           <div className="ap-avatar-row">
             <div className="ap-avatar">{initials}</div>
             <div className="ap-name-block">
@@ -70,59 +106,43 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
 
           <hr className="ap-divider" />
 
-          {/* Info rows */}
           <div className="ap-info-grid">
-            <InfoRow icon="fa-user"        label="Full Name"     value={user?.fullName} />
-            <InfoRow icon="fa-envelope"    label="Email Address" value={user?.email} />
-            <InfoRow icon="fa-phone"       label="Mobile Number" value={user?.mobileNumber} />
-            <InfoRow icon="fa-venus-mars"  label="Gender"        value={formatGender(user?.gender)} />
-            <InfoRow icon="fa-user-tag"    label="Role"          value={user?.role} />
-            <InfoRow icon="fa-circle-check" label="Status"       value={user?.status} />
+            <InfoRow icon="fa-user"         label="Full Name"     value={user?.fullName} />
+            <InfoRow icon="fa-envelope"     label="Email Address" value={user?.email} />
+            <InfoRow icon="fa-phone"        label="Mobile Number" value={user?.mobileNumber} />
+            <InfoRow icon="fa-venus-mars"   label="Gender"        value={formatGender(user?.gender)} />
+            <InfoRow icon="fa-user-tag"     label="Role"          value={user?.role} />
+            <InfoRow icon="fa-circle-check" label="Status"        value={user?.status} />
           </div>
 
           <hr className="ap-divider" />
 
-          <button className="ap-edit-btn" onClick={() => setShowModal(true)}>
+          <button className="ap-edit-btn" onClick={openModal}>
             <i className="fa-solid fa-pen me-2"></i>
             Edit Profile
           </button>
-
         </div>
       </div>
 
-      {/* ── Edit Modal ── */}
       {showModal && (
         <div className="ap-modal-overlay" onClick={() => setShowModal(false)}>
           <div className="ap-modal" onClick={(e) => e.stopPropagation()}>
-
             <div className="ap-modal-header">
-              <h3 className="ap-modal-title">Edit Profile</h3>
+              <div className="ap-modal-title-group">
+                <h3 className="ap-modal-title">Edit Profile</h3>
+                <p className="ap-modal-hint">Only name and gender can be updated</p>
+              </div>
               <button className="ap-modal-close" onClick={() => setShowModal(false)}>
                 <i className="fa-solid fa-xmark"></i>
               </button>
             </div>
 
             <form onSubmit={handleSave} className="ap-modal-body">
-
               <div className="ap-field">
                 <label htmlFor="fullName">Full Name</label>
                 <input id="fullName" name="fullName" type="text"
                   className="ap-input" value={form.fullName}
-                  onChange={handleChange} placeholder="Enter full name" />
-              </div>
-
-              <div className="ap-field">
-                <label htmlFor="email">Email Address</label>
-                <input id="email" name="email" type="email"
-                  className="ap-input" value={form.email}
-                  onChange={handleChange} placeholder="Enter email" />
-              </div>
-
-              <div className="ap-field">
-                <label htmlFor="mobileNumber">Mobile Number</label>
-                <input id="mobileNumber" name="mobileNumber" type="tel"
-                  className="ap-input" value={form.mobileNumber}
-                  onChange={handleChange} placeholder="Enter mobile number" />
+                  onChange={handleChange} placeholder="Enter full name" required />
               </div>
 
               <div className="ap-field">
@@ -137,6 +157,11 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
                 </select>
               </div>
 
+              <div className="ap-readonly-notice">
+                <i className="fa-solid fa-lock"></i>
+                <span>Email and mobile number cannot be changed.</span>
+              </div>
+
               <div className="ap-modal-actions">
                 <button type="button" className="ap-btn-cancel" onClick={() => setShowModal(false)}>
                   Cancel
@@ -148,7 +173,6 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
                   }
                 </button>
               </div>
-
             </form>
           </div>
         </div>

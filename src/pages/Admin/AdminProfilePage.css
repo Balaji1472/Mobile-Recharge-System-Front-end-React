@@ -335,3 +335,37 @@
     flex-direction: column;
   }
 }
+/* ── Modal Title Group ──────────────────────────────── */
+.ap-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ap-modal-hint {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ── Read-only Notice ───────────────────────────────── */
+.ap-readonly-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--pink-bg);
+  border: 1px solid #f5c6c6;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.80rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.ap-readonly-notice i {
+  color: var(--red);
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: 0.78rem;
+}
