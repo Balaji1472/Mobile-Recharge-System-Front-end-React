@@ -63,12 +63,12 @@ export default function AdminSidebar({ isOpen, onClose }) {
               </div>
             )}
             
-            <button
+            {/* <button
               className="sidebar-toggle d-none d-lg-flex"
               onClick={() => setCollapsed(!collapsed)}
             >
               <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`}></i>
-            </button>
+            </button> */}
 
             <button
               className="sidebar-toggle d-lg-none"
