@@ -10,7 +10,7 @@ export const ADMIN_PAGES = [
   { id: 'manage-operators',   label: 'Manage Operators',   icon: 'fa-tower-broadcast',   href: '/admin/manage-operators',  group: 'Operators' },
   { id: 'all-transactions',   label: 'All Transactions',   icon: 'fa-receipt',           href: '/admin/all-transactions',  group: 'Transactions' },
   { id: 'refunds',            label: 'Refunds',            icon: 'fa-rotate-left',       href: '/admin/refunds',           group: 'Transactions' },
-  { id: 'active-offers',      label: 'Active Offers',      icon: 'fa-gift',              href: '/admin/active-offers',     group: 'Offers' },
+  { id: 'all-offers',         label: 'All Offers',         icon: 'fa-gift',              href: '/admin/all-offers',        group: 'Offers' },  
   { id: 'create-offer',       label: 'Create Offer',       icon: 'fa-circle-plus',       href: '/admin/create-offer',      group: 'Offers' },
   { id: 'offer-mapping',      label: 'Plan-Offer Mapping', icon: 'fa-code-branch',       href: '/admin/offer-mapping',     group: 'Offers' },
   { id: 'audit-logs',         label: 'Audit Logs',         icon: 'fa-clipboard-list',    href: '/admin/audit-logs',        group: 'System Logs' },
