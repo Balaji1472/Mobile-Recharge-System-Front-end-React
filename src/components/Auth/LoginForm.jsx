@@ -14,10 +14,7 @@ function validate(email, password) {
   }
   if (!password) {
     errs.password = "Password is required";
-  } else if (!/^[A-Za-z\d@$!%*?&#]{8,}$/.test(password)) {
-    errs.password =
-      "Password must be at least 8 characters long and contain both letters and numbers";
-  }
+   } 
   return errs;
 }
 

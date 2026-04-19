@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import api from '../../api/axios'; 
 import AdminLayout from '../../components/AdminLayout/AdminLayout';
+import { useToast } from '../../hooks/useToast'; 
 import './AdminProfilePage.css';
 
 function formatGender(gender) {
@@ -18,16 +19,15 @@ const GENDER_OPTIONS = [
 
 export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
   const dispatch = useDispatch();
+  const { showToast } = useToast(); 
   const { user: reduxUser } = useSelector((state) => state.auth);
   
-  // Local state to handle the data shown on the page
   const [user, setUser] = useState(reduxUser);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ fullName: '', gender: '' });
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 1. Fetch latest profile data from Backend on component mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -35,6 +35,8 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
         const res = await api.get('/auth/profile');
         setUser(res.data);
       } catch (err) {
+        const backendMessage = err.response?.data?.message || "Error fetching profile";
+        showToast(backendMessage, 'error');
         console.error("Error fetching profile:", err);
       } finally {
         setLoading(false);
@@ -54,7 +56,6 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
     setShowModal(true);
   };
 
-  // 2. PUT request to update profile
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -64,13 +65,14 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
         gender: form.gender
       });
 
-      // Update local state with updated user data
       setUser(res.data); 
-      
+      showToast("Profile updated successfully!", "success"); // Success toast
       setShowModal(false);
     } catch (err) {
+      // Capture exact backend error message
+      const backendMessage = err.response?.data?.message || "Failed to update profile";
+      showToast(backendMessage, 'error');
       console.error("Error updating profile:", err);
-      alert("Failed to update profile. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -85,7 +87,7 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
   }
 
   return (
-    <AdminLayout sidebarOpen={sidebarOpen} onSidebarClose={onSidebarClose}>
+    <div>
       <div className="ap-page">
         <div className="ap-header">
           <h1 className="ap-title">Profile</h1>
@@ -177,7 +179,7 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </div>
   );
 }
 

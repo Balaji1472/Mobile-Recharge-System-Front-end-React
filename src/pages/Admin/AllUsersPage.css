@@ -1,0 +1,478 @@
+/* ============================================================
+   ALL USERS PAGE  — matches ReUp admin theme
+============================================================ */
+
+.um-page {
+  max-width: 1050px;
+}
+
+/* ── Page Header ────────────────────────────────────── */
+.um-header { margin-bottom: 28px; }
+
+.um-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.um-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Main Card ──────────────────────────────────────── */
+.um-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 28px 32px 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.um-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.um-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.um-card-heading i {
+  color: var(--red);
+  font-size: 1.1rem;
+}
+
+.um-count {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.um-card-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0 0 20px;
+}
+
+/* ── Search ─────────────────────────────────────────── */
+.um-search-wrap {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.um-search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.88rem;
+  pointer-events: none;
+}
+
+.um-search {
+  width: 100%;
+  padding: 13px 44px 13px 46px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  background: var(--pink-bg);
+  font-size: 0.88rem;
+  font-family: var(--font);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+
+.um-search:focus {
+  border-color: var(--red);
+  background: var(--white);
+}
+
+.um-search::placeholder { color: var(--muted); }
+
+.um-search-clear {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.um-search-clear:hover { color: var(--red); }
+
+/* ── State Rows ─────────────────────────────────────── */
+.um-state-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.um-error-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: #fff4f4;
+  border: 1px solid #fcd5d5;
+  border-radius: 14px;
+  color: var(--red);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.um-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 48px 0;
+  color: var(--muted);
+}
+.um-empty i   { font-size: 2rem; }
+.um-empty p   { font-size: 0.9rem; font-weight: 500; margin: 0; }
+
+/* ── Table ──────────────────────────────────────────── */
+.um-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.um-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.um-table thead tr {
+  background: var(--pink-bg);
+}
+
+.um-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.um-table th:first-child { border-radius: 10px 0 0 10px; }
+.um-table th:last-child  { border-radius: 0 10px 10px 0; }
+
+.um-table tbody tr {
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.15s;
+}
+
+.um-table tbody tr:last-child { border-bottom: none; }
+
+.um-table tbody tr:hover { background: #fdf6f6; }
+
+.um-table td {
+  padding: 15px 16px;
+  color: var(--text);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.um-td-name  { font-weight: 700; }
+.um-td-email { color: var(--muted); }
+
+/* ── Status Badge ───────────────────────────────────── */
+.um-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.um-badge--active   { background: #e8faf0; color: #16a34a; }
+.um-badge--blocked  { background: #fff1f1; color: var(--red); }
+.um-badge--inactive { background: #f4f4f5; color: #71717a; }
+
+/* ── Action Buttons ─────────────────────────────────── */
+.um-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* "View" ghost button — matches screenshot style */
+.um-btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.um-btn-view:hover {
+  border-color: var(--text);
+  background: #f9f9f9;
+}
+
+/* Override btn border-radius to pill for table */
+.um-action-btns .btn {
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  padding: 8px 18px;
+  min-height: 36px;
+}
+
+/* ── Pagination ─────────────────────────────────────── */
+.um-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+
+.um-pg-btn {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-light);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.um-pg-btn:hover:not(:disabled) {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.um-pg-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.um-pg-btn--active {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+.um-pg-info {
+  margin-left: auto;
+  font-size: 0.80rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── View Modal Overlay ─────────────────────────────── */
+.um-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: um-fadeIn 0.18s ease;
+}
+
+@keyframes um-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal Box ──────────────────────────────────────── */
+.um-modal {
+  background: var(--white);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+  animation: um-slideUp 0.22s ease;
+}
+
+@keyframes um-slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.um-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22px 28px 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.um-modal-title-group { display: flex; flex-direction: column; gap: 2px; }
+
+.um-modal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.um-modal-hint {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.um-modal-close {
+  background: var(--pink-bg);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.um-modal-close:hover { background: #ffe0e0; color: var(--red); }
+
+.um-modal-body { padding: 22px 28px 26px; }
+
+/* ── Avatar in Modal ────────────────────────────────── */
+.um-modal-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.um-modal-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.um-modal-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.um-modal-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0 0 18px;
+}
+
+/* ── Detail Grid ────────────────────────────────────── */
+.um-detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 18px;
+}
+
+.um-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.875rem;
+}
+.um-detail-row:last-child { border-bottom: none; }
+
+.um-detail-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.um-detail-label i { color: var(--red); width: 14px; text-align: center; }
+
+.um-detail-value { color: var(--text); font-weight: 500; }
+
+/* ── Modal Action Buttons ───────────────────────────── */
+.um-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.um-btn-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--muted-2);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: border-color 0.2s, color 0.2s;
+}
+.um-btn-cancel:hover { border-color: var(--red); color: var(--red); }
+
+.um-modal-actions .btn {
+  flex: 2;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  min-height: 42px;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .um-card { padding: 20px 16px 24px; }
+  .um-table td, .um-table th { padding: 12px 10px; }
+  .um-modal-header, .um-modal-body { padding-left: 20px; padding-right: 20px; }
+  .um-modal-actions { flex-direction: column; }
+}

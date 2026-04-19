@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:8086/reup';
 
-// ── Auth ──────────────────────────────────────────────────
+// ── Auth ──
 export async function apiLogin(email, password) {
   const res = await fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
@@ -11,7 +11,7 @@ export async function apiLogin(email, password) {
   if (!res.ok) {
     throw new Error(data.message || 'Login failed');
   }
-  return data; // AuthResponseDTO
+  return data; 
 }
 
 export async function apiRegister(payload) {
@@ -33,7 +33,7 @@ export async function apiRegister(payload) {
   return true;
 }
 
-// ── Plans ─────────────────────────────────────────────────
+// ─ Plans ─
 export async function apiGetAllPlans(token) {
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;

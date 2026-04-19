@@ -1,0 +1,201 @@
+/* ============================================================
+   OPERATOR PLANS PAGE — matches ReUp admin theme
+============================================================ */
+
+.op-page { max-width: 1100px; }
+
+/* ── Page Header ────────────────────────────────────── */
+.op-header { margin-bottom: 28px; }
+
+.op-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.op-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Main Card ──────────────────────────────────────── */
+.op-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 28px 32px 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.op-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.op-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.op-card-heading i { color: var(--red); font-size: 1.1rem; }
+
+.op-card-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0 0 20px;
+}
+
+/* ── Operator Filter Dropdown ───────────────────────── */
+.op-filter-select {
+  padding: 9px 36px 9px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  font-size: 0.875rem;
+  font-family: var(--font);
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  transition: border-color 0.18s;
+}
+
+.op-filter-select:focus { border-color: var(--red); }
+
+/* ── Table ──────────────────────────────────────────── */
+.op-table-wrap { overflow-x: auto; }
+
+.op-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.op-table th {
+  text-align: left;
+  padding: 11px 14px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+  background: var(--pink-bg);
+}
+
+.op-table th:first-child { border-radius: 10px 0 0 10px; }
+.op-table th:last-child  { border-radius: 0 10px 10px 0; }
+
+.op-table td {
+  padding: 14px 14px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.op-table tr:last-child td { border-bottom: none; }
+
+/* ── Operator Cell ──────────────────────────────────── */
+.op-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.op-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.op-logo-fallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: var(--pink-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+.op-name { font-weight: 600; }
+.op-plan-name { font-weight: 500; }
+.op-price { font-weight: 700; }
+
+/* ── Status Badge ───────────────────────────────────── */
+.op-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.op-badge--active   { background: #e6f9ef; color: #22863a; }
+.op-badge--inactive { background: #f0f0f0; color: var(--muted); }
+
+/* ── Loading / Empty ─────────────────────────────────── */
+.op-loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.op-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ── Pagination ──────────────────────────────────────── */
+.op-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+
+.op-pg-btn {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-light);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.op-pg-btn:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
+.op-pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.op-pg-btn--active  { background: var(--red); border-color: var(--red); color: white; }
+
+.op-pg-info {
+  margin-left: auto;
+  font-size: 0.80rem;
+  color: var(--muted);
+  font-weight: 500;
+}

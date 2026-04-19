@@ -1,18 +1,28 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import HomePage        from '../pages/HomePage';
-import AboutPage       from '../pages/AboutPage';
-import ContactPage     from '../pages/ContactPage';
-import ProfilePage     from '../pages/ProfilePage';
-import LoginForm       from '../components/Auth/LoginForm';
-import RegisterForm    from '../components/Auth/RegisterForm';
-import ProtectedRoute  from '../components/ProtectedRoute';
-import Error           from '../pages/Error';
-import OffersPage      from '../pages/OffersPage';
-import AdminProfilePage from '../pages/Admin/AdminProfilePage';
-import RechargePage from '../pages/RechargePage';
+import HomePage         from '../pages/HomePage';
+import AboutPage        from '../pages/AboutPage';
+import ContactPage      from '../pages/ContactPage';
+import ProfilePage      from '../pages/ProfilePage';
+import LoginForm        from '../components/Auth/LoginForm';
+import RegisterForm     from '../components/Auth/RegisterForm';
+import ProtectedRoute   from '../components/ProtectedRoute';
+import Error            from '../pages/Error';
+import OffersPage       from '../pages/OffersPage';
+import RechargePage     from '../pages/RechargePage';
+
+import AdminProfilePage    from '../pages/Admin/AdminProfilePage';
+import AnalyticsPage from '../pages/Admin/Analyticspage';
+import AllUsersPage        from '../pages/Admin/AllUsersPage';
+import UserRolesPage       from '../pages/Admin/UserRolesPage';
+import AllPlansPage        from '../pages/Admin/AllPlansPage';
+import CreatePlanPage      from '../pages/Admin/CreatePlanPage';
+import PlanCategoriesPage  from '../pages/Admin/PlanCategoriesPage';
+import AdminLayout         from '../components/AdminLayout/AdminLayout';
+import OperatorPlansPage from '../pages/Admin/OperatorPlansPage';
+import ManageOperatorsPage from '../pages/Admin/ManageOperatorsPage';
 
 function AdminRoute({ children }) {
   const { user, accessToken } = useSelector((state) => state.auth);
@@ -22,10 +32,13 @@ function AdminRoute({ children }) {
 }
 
 export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
+  const adminProps = { sidebarOpen, onSidebarClose };
+
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/"         element={<HomePage />} />
-      <Route path='/recharge' element={<RechargePage/>}></Route>
+      <Route path="/recharge" element={<RechargePage />} />
       <Route path="/about"    element={<AboutPage />} />
       <Route path="/contact"  element={<ContactPage />} />
       <Route path="/offers"   element={<OffersPage />} />
@@ -33,12 +46,28 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/profile"  element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-      {/* Admin routes — pass sidebar props */}
-      <Route path="/admin/profile" element={
-        <AdminRoute>
-          <AdminProfilePage sidebarOpen={sidebarOpen} onSidebarClose={onSidebarClose} />
-        </AdminRoute>
-      } />
+      {/* Persistent Admin Layout Wrapper */}
+      <Route 
+        path="/admin" 
+        element={
+          <AdminRoute>
+            <AdminLayout {...adminProps}>
+              <Outlet /> 
+            </AdminLayout>
+          </AdminRoute>
+        }
+      >
+        {/* Child routes */}
+        <Route path="profile"         element={<AdminProfilePage />} />
+        <Route path="analytics"       element={<AnalyticsPage />} />
+        <Route path="all-users"       element={<AllUsersPage />} />
+        <Route path="user-roles"      element={<UserRolesPage />} />
+        <Route path="all-plans"       element={<AllPlansPage />} />
+        <Route path="create-plan"     element={<CreatePlanPage />} />
+        <Route path="plan-categories" element={<PlanCategoriesPage />} />
+        <Route path="operator-plans" element={<OperatorPlansPage />} />
+        <Route path="manage-operators" element={<ManageOperatorsPage />} />
+      </Route>
 
       <Route path="*" element={<Error />} />
     </Routes>
