@@ -18,7 +18,8 @@ const LOGO_MAP = {
   BSNL:    bsnlLogo,
 };
 
-const ITEMS_PER_PAGE = 10;
+/* Updated row limit to 8 */
+const ITEMS_PER_PAGE = 8;
 
 /* ── Operator Logo Cell ── */
 function OperatorLogo({ name }) {
@@ -42,7 +43,7 @@ function StatusBadge({ active }) {
 }
 
 /* ══════════════════════════════════════════════════════
-   MAIN PAGE
+    MAIN PAGE
 ══════════════════════════════════════════════════════ */
 export default function OperatorPlansPage({ sidebarOpen, onSidebarClose }) {
   const { showToast } = useToast(); // Initialize toast

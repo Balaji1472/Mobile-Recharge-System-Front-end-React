@@ -1,0 +1,173 @@
+/* ============================================================
+   CREATE OFFER PAGE — matches ReUp admin theme
+============================================================ */
+
+.co-page { max-width: 900px; }
+
+/* ── Page Header ────────────────────────────────────── */
+.co-header { margin-bottom: 28px; }
+
+.co-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.co-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Card ───────────────────────────────────────────── */
+.co-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 32px 36px 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.co-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.co-card-heading i { color: var(--red); font-size: 1.1rem; }
+
+.co-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0 0 28px;
+}
+
+/* ── Success Banner ─────────────────────────────────── */
+.co-success {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #e6f9ef;
+  border-radius: 12px;
+  color: #22863a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  animation: co-slideDown 0.22s ease;
+}
+
+@keyframes co-slideDown {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Form Grid ───────────────────────────────────────── */
+/* 3 columns for first row, full-width halves for date row */
+.co-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* Date fields each span 1.5 cols — achieved via 2-col span on a 3-col grid
+   We make start + end each take half the full row */
+.co-form-grid .co-half {
+  grid-column: span 1;   /* each date field takes 1 col on 3-col grid */
+}
+
+/* Override: put start+end on their own row spanning full width as 2 halves */
+/* We'll use a dedicated date-row wrapper instead for cleaner control */
+
+.co-field { display: flex; flex-direction: column; gap: 7px; }
+
+.co-label {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.co-label span { color: var(--red); }
+
+.co-input,
+.co-select {
+  padding: 11px 15px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--pink-bg);
+  outline: none;
+  transition: border-color 0.18s, background 0.18s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.co-input:focus, .co-select:focus { border-color: var(--red); background: var(--white); }
+.co-input.error  { border-color: var(--red); }
+.co-input::placeholder { color: var(--muted); font-size: 0.83rem; }
+
+.co-error-text { font-size: 0.76rem; color: var(--red); }
+
+/* Date row: start + end side by side, each half the form width */
+.co-date-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Override for co-half to span the full bottom row as a pair */
+.co-form-grid .co-half:nth-child(4) { grid-column: 1 / 2; grid-row: 2; }
+.co-form-grid .co-half:nth-child(5) { grid-column: 2 / 3; grid-row: 2; }
+
+/* ── Form Footer ─────────────────────────────────────── */
+.co-form-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.co-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.co-btn-submit:hover:not(:disabled) { background: var(--red-dark); }
+.co-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.co-btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: border-color 0.18s;
+}
+.co-btn-reset:hover { border-color: var(--red); }
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 700px) {
+  .co-card { padding: 20px 16px 28px; }
+  .co-form-grid { grid-template-columns: 1fr; }
+  .co-form-grid .co-half:nth-child(4),
+  .co-form-grid .co-half:nth-child(5) { grid-column: 1; grid-row: auto; }
+}

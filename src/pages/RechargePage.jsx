@@ -20,7 +20,7 @@
               <div className="recharge-scroll-panel">
                 <RechargeForm />
                 <RechargeFAQ />
-                <Footer />
+                {/* <Footer /> */}
               </div>
             </div>
     
