@@ -1,0 +1,210 @@
+/* ============================================================
+   USER SIDEBAR — mirrors AdminSidebar, same ReUp theme
+============================================================ */
+
+.user-sidebar {
+  position: fixed;
+  top: var(--navbar-h);
+  left: 0;
+  height: calc(100vh - var(--navbar-h));
+  width: var(--sidebar-w);
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  z-index: 1100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* ── Mobile Pull Handle ─────────────────────────────── */
+.user-pull-handle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: #f05a5a;
+  color: white;
+  width: 28px;
+  height: 50px;
+  border: none;
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1090;
+  cursor: pointer;
+  box-shadow: 2px 0 12px rgba(240, 90, 90, 0.3);
+  transition: all 0.2s ease;
+}
+.user-pull-handle:hover { width: 35px; }
+
+/* ── Header ─────────────────────────────────────────── */
+.user-sidebar-header {
+  padding: 18px 14px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  flex-shrink: 0;
+}
+
+.user-sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-sidebar-panel-label span  { font-size: 0.85rem; font-weight: 700; color: #1a1a1a; display: block; }
+.user-sidebar-panel-label small { font-size: 0.72rem; color: #6b7280; }
+
+.user-sidebar-toggle {
+  background: #fff5f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+.user-sidebar-toggle:hover { background: #f05a5a; color: white; }
+
+/* ── Nav ────────────────────────────────────────────── */
+.user-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+}
+
+.user-sidebar-group { margin-bottom: 6px; }
+
+.user-sidebar-group-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 10px 4px;
+}
+
+.user-sidebar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #4b5563;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+  transition: background 0.15s, color 0.15s;
+}
+.user-sidebar-item:hover,
+.user-sidebar-item--active {
+  background: #fff5f5;
+  color: #f05a5a;
+}
+
+.user-sidebar-item-icon {
+  font-size: 0.9rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.user-sidebar-item-label { flex: 1; }
+
+.user-sidebar-active-bar {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: #f05a5a;
+  border-radius: 4px 0 0 4px;
+}
+
+/* ── Footer ─────────────────────────────────────────── */
+.user-sidebar-footer {
+  border-top: 1px solid #f3f4f6;
+  padding: 16px 12px;
+  flex-shrink: 0;
+}
+
+.user-sidebar-user-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.user-sidebar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f05a5a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.user-sidebar-user-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.user-sidebar-user-role {
+  font-size: 0.7rem;
+  color: #f05a5a;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.user-sidebar-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-family: var(--font);
+  transition: background 0.15s, color 0.15s;
+}
+.user-sidebar-logout:hover { background: #fff1f1; color: #dc2626; }
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .user-sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-w) !important;
+  }
+  .user-sidebar.user-sidebar-mobile-open {
+    transform: translateX(0);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
+  }
+}
