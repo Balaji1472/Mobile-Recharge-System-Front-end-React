@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../features/auth/authSlice';
+import { logout } from '../../features/auth/slice/authSlice';
 import { useToast } from '../../hooks/useToast';
 import { ADMIN_PAGES } from './sidebarConfig';
 import './AdminSidebar.css';

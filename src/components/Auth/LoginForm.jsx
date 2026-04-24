@@ -59,7 +59,7 @@ export default function LoginForm() {
       if (profileData?.role === 'ADMIN') {
         navigate('/admin/profile');
       } else {
-        navigate('/profile');
+        navigate('/user/profile');
       }
     } catch (err) {
       setApiError(err?.message || 'Login failed. Please try again.');

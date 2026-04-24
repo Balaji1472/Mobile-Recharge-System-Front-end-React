@@ -1,0 +1,24 @@
+/* ============================================================
+   USER LAYOUT — mirrors AdminLayout
+============================================================ */
+.user-layout {
+  display: flex;
+  background: var(--pink-bg);
+  min-height: calc(100vh - var(--navbar-h));
+}
+
+.user-content {
+  margin-left: 260px;
+  flex: 1;
+  padding: 32px;
+  transition: margin-left 0.25s ease;
+  min-height: calc(100vh - var(--navbar-h));
+  overflow-x: hidden;
+}
+
+@media (max-width: 992px) {
+  .user-content {
+    margin-left: 0 !important;
+    padding: 20px 16px;
+  }
+}

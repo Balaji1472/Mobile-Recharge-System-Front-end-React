@@ -2,39 +2,60 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+// ── Public pages (unchanged) ──
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
-import ProfilePage from "../pages/ProfilePage";
-import LoginForm from "../components/Auth/LoginForm";
-import RegisterForm from "../components/Auth/RegisterForm";
-import ProtectedRoute from "../components/ProtectedRoute";
 import Error from "../pages/Error";
 import OffersPage from "../pages/OffersPage";
 import RechargePage from "../pages/RechargePage";
 
-import AdminProfilePage from "../pages/Admin/AdminProfilePage";
-import AnalyticsPage from "../pages/Admin/Analyticspage";
-import AllUsersPage from "../pages/Admin/AllUsersPage";
-import UserRolesPage from "../pages/Admin/UserRolesPage";
-import AllPlansPage from "../pages/Admin/AllPlansPage";
-import CreatePlanPage from "../pages/Admin/CreatePlanPage";
-import PlanCategoriesPage from "../pages/Admin/PlanCategoriesPage";
+// ── Auth feature ──
+import LoginForm from "../features/auth/components/jsx/LoginForm";
+import RegisterForm from "../features/auth/components/jsx/RegisterForm";
+
+// ── Shared layout / guard ──
+import ProtectedRoute from "../components/ProtectedRoute";
 import AdminLayout from "../components/AdminLayout/AdminLayout";
-import OperatorPlansPage from "../pages/Admin/OperatorPlansPage";
-import ManageOperatorsPage from "../pages/Admin/ManageOperatorsPage";
-import AllTransactionsPage from "../pages/Admin/AllTransactionsPage";
-import RefundsPage from "../pages/Admin/RefundsPage";
-import NotificationsPage from "../pages/Admin/NotificationsPage";
-import AuditLogsPage from "../pages/Admin/AuditLogsPage";
-import AllOffersPage from "../pages/Admin/AllOffersPage";
-import OfferMappingPage from "../pages/Admin/OfferMappingPage";
-import CreateOfferPage from "../pages/Admin/CreateOfferPage";
+import UserLayout from "../components/UserLayout/UserLayout";
+
+// ── Admin features ──
+import AdminProfilePage from "../features/admin/profile/jsx/AdminProfilePage";
+import AnalyticsPage from "../features/admin/analytics/jsx/AnalyticsPage";
+import AllUsersPage from "../features/admin/users/jsx/AllUsersPage";
+import UserRolesPage from "../features/admin/users/jsx/UserRolesPage";
+import AllPlansPage from "../features/admin/plans/jsx/AllPlansPage";
+import CreatePlanPage from "../features/admin/plans/jsx/CreatePlanPage";
+import PlanCategoriesPage from "../features/admin/plans/jsx/PlanCategoriesPage";
+import OperatorPlansPage from "../features/admin/operators/jsx/OperatorPlansPage";
+import ManageOperatorsPage from "../features/admin/operators/jsx/ManageOperatorsPage";
+import AllTransactionsPage from "../features/admin/transactions/jsx/AllTransactionsPage";
+import RefundsPage from "../features/admin/transactions/jsx/RefundsPage";
+import AllOffersPage from "../features/admin/offers/jsx/AllOffersPage";
+import CreateOfferPage from "../features/admin/offers/jsx/CreateOfferPage";
+import OfferMappingPage from "../features/admin/offers/jsx/OfferMappingPage";
+import AuditLogsPage from "../features/admin/auditLogs/jsx/AuditLogsPage";
+import NotificationsPage from "../features/admin/notifications/jsx/NotificationsPage";
+
+// ── User features ──
+import UserOverviewPage from "../features/user/overview/jsx/UserOverviewPage";
+import TransactionHistoryPage from "../features/user/transactions/jsx/TransactionHistoryPage";
+import UserNotificationsPage from "../features/user/notifications/jsx/NotificationsPage";
+import ActivePlansPage from "../features/user/activePlans/jsx/ActivePlansPage";
+import ChangePasswordPage from "../features/user/changePassword/jsx/ChangePasswordPage";
+import UserProfilePage from "../features/user/profile/jsx/UserProfilePage";
 
 function AdminRoute({ children }) {
   const { user, accessToken } = useSelector((state) => state.auth);
   if (!accessToken) return <Navigate to="/login" replace />;
   if (user?.role !== "ADMIN") return <Navigate to="/profile" replace />;
+  return children;
+}
+
+function UserRoute({ children }) {
+  const { user, accessToken } = useSelector((state) => state.auth);
+  if (!accessToken) return <Navigate to="/login" replace />;
+  if (user?.role === "ADMIN") return <Navigate to="/admin/analytics" replace />;
   return children;
 }
 
@@ -51,14 +72,6 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
       <Route path="/offers" element={<OffersPage />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<RegisterForm />} />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
-      />
 
       {/* Persistent Admin Layout Wrapper */}
       <Route
@@ -83,11 +96,30 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
         <Route path="manage-operators" element={<ManageOperatorsPage />} />
         <Route path="all-transactions" element={<AllTransactionsPage />} />
         <Route path="refunds" element={<RefundsPage />} />
-        <Route path="all-offers"       element={<AllOffersPage />} />
-        <Route path="create-offer"     element={<CreateOfferPage />} />
-        <Route path="offer-mapping"    element={<OfferMappingPage />} />
+        <Route path="all-offers" element={<AllOffersPage />} />
+        <Route path="create-offer" element={<CreateOfferPage />} />
+        <Route path="offer-mapping" element={<OfferMappingPage />} />
         <Route path="audit-logs" element={<AuditLogsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
+      </Route>
+
+      {/* User dashboard layout wrapper */}
+      <Route
+        path="/user"
+        element={
+          <UserRoute>
+            <UserLayout {...adminProps}>
+              <Outlet />
+            </UserLayout>
+          </UserRoute>
+        }
+      >
+        <Route path="overview"         element={<UserOverviewPage />} />
+        <Route path="profile"          element={<UserProfilePage />} />
+        <Route path="change-password"  element={<ChangePasswordPage />} />
+        <Route path="transactions"     element={<TransactionHistoryPage />} />
+        <Route path="active-plans"     element={<ActivePlansPage />} />
+        <Route path="notifications"    element={<UserNotificationsPage />} />
       </Route>
 
       <Route path="*" element={<Error />} />

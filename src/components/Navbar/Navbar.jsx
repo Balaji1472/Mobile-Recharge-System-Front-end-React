@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../features/auth/authSlice';
+import { logout } from '../../features/auth/slice/authSlice';
 import { useToast } from '../../hooks/useToast';
 import './Navbar.css';
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { showToast } = useToast();
+  const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -25,7 +25,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-    showToast('Logged out successfully');
+    toast('Logged out successfully');
     navigate('/');
     setMenuOpen(false);
     setDropdownOpen(false);
@@ -118,7 +118,7 @@ export default function Navbar() {
                         </Link>
                       ) : (
                         <Link
-                          to="/profile"
+                          to="/user/profile"
                           className="nav-dropdown-item"
                           onClick={() => { setDropdownOpen(false); setMenuOpen(false); }}
                         >

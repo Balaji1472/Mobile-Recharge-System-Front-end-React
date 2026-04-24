@@ -1,0 +1,269 @@
+/* ============================================================
+   USER OVERVIEW PAGE — matches ReUp admin theme
+============================================================ */
+
+.uo-page { max-width: 1050px; }
+
+/* ── Page Header ────────────────────────────────────── */
+.uo-header { margin-bottom: 28px; }
+
+.uo-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.uo-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Center States (loading / error) ────────────────── */
+.uo-center-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.uo-error-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: #fff4f4;
+  border: 1px solid #fcd5d5;
+  border-radius: 14px;
+  color: var(--red);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ── Stat Cards Row ─────────────────────────────────── */
+.uo-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.uo-stat-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow-md);
+  border-top: 4px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.uo-stat--total   { border-top-color: #6366f1; }
+.uo-stat--success { border-top-color: #16a34a; }
+.uo-stat--failed  { border-top-color: var(--red); }
+.uo-stat--spent   { border-top-color: #f59e0b; }
+
+.uo-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.uo-stat--total   .uo-stat-icon { background: #eef2ff; color: #6366f1; }
+.uo-stat--success .uo-stat-icon { background: #e8faf0; color: #16a34a; }
+.uo-stat--failed  .uo-stat-icon { background: #fff1f1; color: var(--red); }
+.uo-stat--spent   .uo-stat-icon { background: #fff7ed; color: #f59e0b; }
+
+.uo-stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin: 0;
+}
+
+.uo-stat-label {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ── Bottom Row: Plan + Account ─────────────────────── */
+.uo-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Shared Card ────────────────────────────────────── */
+.uo-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 26px 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.uo-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.0rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.uo-card-heading i { color: var(--red); font-size: 1.05rem; }
+
+.uo-card-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0 0 20px;
+}
+
+/* ── Current Plan Card ──────────────────────────────── */
+.uo-plan-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.uo-plan-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.uo-plan-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+
+.uo-plan-operator {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin: 0;
+}
+
+.uo-plan-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.uo-plan-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.875rem;
+}
+.uo-plan-row:last-child { border-bottom: none; }
+
+.uo-plan-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.uo-plan-label i { color: var(--red); width: 14px; text-align: center; }
+
+.uo-plan-value { font-weight: 700; color: var(--text); }
+
+/* ── No active plan state ───────────────────────────── */
+.uo-no-plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+  color: var(--muted);
+  text-align: center;
+}
+.uo-no-plan i      { font-size: 2rem; }
+.uo-no-plan p      { font-size: 0.9rem; font-weight: 600; margin: 0; color: var(--text); }
+.uo-no-plan-sub    { font-size: 0.82rem !important; font-weight: 400 !important; color: var(--muted) !important; }
+
+/* ── Account Status Card ────────────────────────────── */
+.uo-account-status-row {
+  margin-bottom: 20px;
+}
+
+.uo-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.uo-status--active   { background: #e8faf0; color: #16a34a; }
+.uo-status--blocked  { background: #fff1f1; color: var(--red); }
+.uo-status--inactive { background: #f4f4f5; color: #71717a; }
+
+.uo-account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.uo-account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.875rem;
+}
+.uo-account-row:last-child { border-bottom: none; }
+
+.uo-account-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.uo-account-label i { width: 14px; text-align: center; color: var(--muted); }
+
+.uo-account-val {
+  font-weight: 700;
+  color: var(--text);
+}
+.uo-val--success { color: #16a34a; }
+.uo-val--failed  { color: var(--red); }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .uo-stats-row   { grid-template-columns: repeat(2, 1fr); }
+  .uo-bottom-row  { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 500px) {
+  .uo-stats-row { grid-template-columns: repeat(2, 1fr); }
+  .uo-card { padding: 20px 16px; }
+}

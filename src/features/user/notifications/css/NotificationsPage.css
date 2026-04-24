@@ -1,0 +1,269 @@
+/* ============================================================
+   NOTIFICATIONS PAGE — matches ReUp user dashboard theme
+============================================================ */
+
+.nt-page { max-width: 720px; }
+
+/* ── Page Header ────────────────────────────────────── */
+.nt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.nt-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.nt-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Mark All Button ────────────────────────────────── */
+.nt-btn-mark-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-light);
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.83rem;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.nt-btn-mark-all:hover:not(:disabled) {
+  border-color: var(--red);
+  color: var(--red);
+}
+.nt-btn-mark-all:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Tab Switcher ───────────────────────────────────── */
+.nt-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: var(--white);
+  border-radius: var(--radius-pill);
+  padding: 6px;
+  width: fit-content;
+  box-shadow: var(--shadow);
+}
+
+.nt-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 22px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.nt-tab:hover { color: var(--text); }
+
+.nt-tab--active {
+  background: var(--red);
+  color: #fff;
+}
+
+.nt-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: white;
+  color: var(--red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.nt-tab--active .nt-tab-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+/* ── Content Area ───────────────────────────────────── */
+.nt-content { min-height: 200px; }
+
+/* ── States ─────────────────────────────────────────── */
+.nt-center-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 56px 0;
+  color: var(--muted);
+  text-align: center;
+}
+.nt-empty i { font-size: 2.2rem; }
+.nt-empty p { font-size: 0.9rem; font-weight: 500; margin: 0; max-width: 260px; }
+
+/* ── Notification List ──────────────────────────────── */
+.nt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Notification Card ──────────────────────────────── */
+.nt-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.18s, transform 0.18s;
+  position: relative;
+}
+.nt-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Unread card gets a subtle left accent */
+.nt-card--unread {
+  border-left: 3px solid var(--red);
+}
+
+.nt-card--read {
+  border-left: 3px solid transparent;
+  opacity: 0.85;
+}
+
+/* ── Type Icon ──────────────────────────────────────── */
+.nt-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.nt-type--recharge { background: #fff7ed; color: #f59e0b; }
+.nt-type--refund   { background: #eef2ff; color: #6366f1; }
+.nt-type--offer    { background: #fff1f1; color: var(--red); }
+.nt-type--system   { background: #e8faf0; color: #16a34a; }
+.nt-type--default  { background: var(--pink-bg); color: var(--muted); }
+
+/* ── Card Body ──────────────────────────────────────── */
+.nt-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.nt-card-message {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.nt-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.nt-card-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--pink-bg);
+  color: var(--muted-2);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nt-card-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.nt-card-time i { font-size: 0.7rem; }
+
+/* ── Mark Read Button ───────────────────────────────── */
+.nt-btn-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-light);
+  background: var(--white);
+  color: var(--muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  margin-top: 2px;
+}
+.nt-btn-mark:hover:not(:disabled) {
+  border-color: #16a34a;
+  color: #16a34a;
+  background: #e8faf0;
+}
+.nt-btn-mark:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Read Indicator ─────────────────────────────────── */
+.nt-read-dot {
+  color: #16a34a;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 4px;
+  opacity: 0.6;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 576px) {
+  .nt-header { flex-direction: column; align-items: flex-start; }
+  .nt-btn-mark-all { margin-top: 0; }
+  .nt-card { padding: 14px 14px; gap: 10px; }
+}
