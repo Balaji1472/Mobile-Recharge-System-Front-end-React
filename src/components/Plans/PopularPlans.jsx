@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; // ← ADD THIS
 import { apiGetAllPlans } from '../../services/api';
 import './PopularPlans.css';
 
@@ -21,7 +22,9 @@ function getBorderClass(operatorName = '') {
   return '';
 }
 
+// ← ONLY THIS COMPONENT CHANGED — added navigate on button click
 function PlanCard({ plan }) {
+  const navigate = useNavigate(); // ← ADD THIS
   const border = getBorderClass(plan.operatorName);
 
   return (
@@ -50,11 +53,13 @@ function PlanCard({ plan }) {
         )}
       </ul>
 
-      <button className="btn-plan">Recharge Now</button>
+      {/* ← ONLY THIS LINE CHANGED */}
+      <button className="btn-plan" onClick={() => navigate('/recharge')}>
+        Recharge Now
+      </button>
     </div>
   );
 }
-
 export default function PopularPlans() {
   const { token } = useSelector((state) => state.auth);
   const [plans, setPlans] = useState([]);

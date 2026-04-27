@@ -1,0 +1,142 @@
+/* ── PlanCard ─────────────────────────────────────────────────────────────── */
+
+.plan-card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+  margin-bottom: 10px;
+}
+
+.plan-card:hover {
+  box-shadow: 0 4px 20px rgba(200, 48, 42, 0.1);
+  border-color: #e8d0d0;
+  transform: translateY(-1px);
+}
+
+/* Main row */
+.plan-card__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Price */
+.plan-card__price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  display: flex;
+  align-items: flex-start;
+  gap: 1px;
+  flex-shrink: 0;
+  min-width: 70px;
+}
+
+.plan-card__rupee {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 6px;
+  color: #1a1a1a;
+}
+
+/* Spec chips */
+.plan-card__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.plan-card__spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  background: #f7f2f2;
+  border-radius: 6px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.plan-card__spec-chip i {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.plan-card__spec-chip--calls {
+  background: #f0f7f0;
+  color: #2e7d32;
+}
+
+.plan-card__spec-chip--calls i {
+  color: #2e7d32;
+}
+
+/* View button */
+.plan-card__view-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #c8302a;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.plan-card__view-btn:hover {
+  opacity: 0.75;
+}
+
+.plan-card__view-btn i {
+  font-size: 0.75rem;
+}
+
+/* Description */
+.plan-card__desc {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 8px 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed #f0e8e8;
+}
+
+/* Promo strip */
+.plan-card__promo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #c8302a;
+  background: #fff5f5;
+  border-top: 1px solid #fcd5d5;
+  margin: 10px -20px -16px;
+  padding: 8px 20px;
+  border-radius: 0 0 12px 12px;
+}
+
+.plan-card__promo i {
+  font-size: 0.8rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 576px) {
+  .plan-card__main {
+    flex-wrap: wrap;
+  }
+
+  .plan-card__view-btn {
+    margin-left: auto;
+  }
+}

@@ -2,45 +2,67 @@ import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login, fetchProfile } from '../../slice/authSlice';
+import { useToast } from '../../../../hooks/useToast';   // ← for API error toasts
 import AuthOperatorCarousel from './AuthOperatorCarousel';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import '../css/Auth.css';
 
-function validate(email, password) {
+/* ── Field-level validators (reused for both onBlur and onSubmit) ── */
+function validateEmail(email) {
+  if (!email.trim()) return 'Email is required';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) return 'Enter a valid email address';
+  return '';
+}
+
+function validatePassword(password) {
+  if (!password) return 'Password is required';
+  return '';
+}
+
+function validateAll(email, password) {
   const errs = {};
-  if (!email.trim()) {
-    errs.email = 'Email is required';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-    errs.email = 'Enter a valid email address';
-  }
-  if (!password) {
-    errs.password = 'Password is required';
-  }
+  const emailErr    = validateEmail(email);
+  const passwordErr = validatePassword(password);
+  if (emailErr)    errs.email    = emailErr;
+  if (passwordErr) errs.password = passwordErr;
   return errs;
 }
 
 export default function LoginForm() {
-  const [email, setEmail]       = useState('');
+  const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors]     = useState({});
-  const [apiError, setApiError] = useState('');
-  const [loading, setLoading]   = useState(false);
+  const [errors,   setErrors]   = useState({});
+  const [loading,  setLoading]  = useState(false);
   const [showForgotModal, setShowForgotModal] = useState(false);
 
-  const btnRef   = useRef(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // apiError state removed — backend messages now go through toast
+  const { toast }  = useToast();
+  const btnRef     = useRef(null);
+  const dispatch   = useDispatch();
+  const navigate   = useNavigate();
 
   const shakeBtn = () => {
     btnRef.current?.classList.add('btn-shake');
     setTimeout(() => btnRef.current?.classList.remove('btn-shake'), 500);
   };
 
+  /* ── onBlur handlers — validate a single field when user leaves it ── */
+  const handleEmailBlur = () => {
+    const err = validateEmail(email);
+    setErrors((prev) => ({ ...prev, email: err }));
+  };
+
+  const handlePasswordBlur = () => {
+    const err = validatePassword(password);
+    setErrors((prev) => ({ ...prev, password: err }));
+  };
+
+  /* ── Submit ── */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setApiError('');
 
-    const errs = validate(email, password);
+    // Run full validation on submit
+    const errs = validateAll(email, password);
     setErrors(errs);
     if (Object.keys(errs).length > 0) { shakeBtn(); return; }
 
@@ -54,7 +76,8 @@ export default function LoginForm() {
         navigate('/user/profile');
       }
     } catch (err) {
-      setApiError(err?.message || 'Login failed. Please try again.');
+      // Backend error — show as toast instead of inline message
+      toast(err?.message || 'Login failed. Please try again.', 'error');
       shakeBtn();
     } finally {
       setLoading(false);
@@ -79,8 +102,12 @@ export default function LoginForm() {
               </h2>
 
               <form onSubmit={handleSubmit} noValidate>
+
+                {/* Email */}
                 <div className="input-box">
-                  <label htmlFor="loginEmail">Email</label>
+                  <label htmlFor="loginEmail">
+                    Email <span style={{ color: 'red' }}>*</span>
+                  </label>
                   <input
                     id="loginEmail"
                     type="email"
@@ -89,15 +116,19 @@ export default function LoginForm() {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      setErrors((p) => ({ ...p, email: '' }));
-                      setApiError('');
+                      // Clear error while typing once they start correcting
+                      if (errors.email) setErrors((p) => ({ ...p, email: '' }));
                     }}
+                    onBlur={handleEmailBlur}   // ← validate immediately on focus-out
                   />
                   <small className="field-error">{errors.email || ''}</small>
                 </div>
 
+                {/* Password */}
                 <div className="input-box">
-                  <label htmlFor="loginPassword">Password</label>
+                  <label htmlFor="loginPassword">
+                    Password <span style={{ color: 'red' }}>*</span>
+                  </label>
                   <input
                     id="loginPassword"
                     type="password"
@@ -106,14 +137,14 @@ export default function LoginForm() {
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
-                      setErrors((p) => ({ ...p, password: '' }));
-                      setApiError('');
+                      if (errors.password) setErrors((p) => ({ ...p, password: '' }));
                     }}
+                    onBlur={handlePasswordBlur}  // ← validate immediately on focus-out
                   />
                   <small className="field-error">{errors.password || ''}</small>
                 </div>
 
-                {/* Forgot Password trigger */}
+                {/* Forgot Password */}
                 <div className="text-start mb-4">
                   <span
                     className="forgot-link"
@@ -124,12 +155,7 @@ export default function LoginForm() {
                   </span>
                 </div>
 
-                {apiError && (
-                  <span className="api-error-msg">
-                    <i className="fa-solid fa-circle-xmark me-1"></i>
-                    {apiError}
-                  </span>
-                )}
+                {/* apiError inline block removed — now shows as toast */}
 
                 <button
                   ref={btnRef}
@@ -147,6 +173,7 @@ export default function LoginForm() {
                 <p className="switch-auth">
                   Don't have an account? – <Link to="/register">Register</Link>
                 </p>
+
               </form>
             </div>
           </div>
@@ -154,7 +181,6 @@ export default function LoginForm() {
         </div>
       </div>
 
-      {/* Forgot Password Modal — rendered outside the form to avoid nesting issues */}
       {showForgotModal && (
         <ForgotPasswordModal onClose={() => setShowForgotModal(false)} />
       )}

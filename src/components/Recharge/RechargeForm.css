@@ -1,34 +1,134 @@
-/* ============================================================
-   RECHARGE FORM AREA
-============================================================ */
+/* ── RechargeForm ─────────────────────────────────────────────────────────── */
+
 .recharge-form-area {
-  padding: 80px 10%;
+  padding: 48px 40px 32px;
+}
+
+.form-container {
+  max-width: 480px;
 }
 
 .form-container h3 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 5px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
 }
 
 .sub-text {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 40px;
+  font-size: 0.875rem;
+  color: #888;
+  margin: 0 0 28px;
 }
 
-/* Constrain the common Input component width */
+/* Card wrapper around the form */
+.rf-card {
+  background: #fff;
+  border: 1px solid #f0e8e8;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(200, 48, 42, 0.05);
+}
+
+/* Input wrapper */
 .recharge-input-wrap {
-  max-width: 500px;
+  margin-bottom: 0;
 }
 
-@media (max-width: 575.98px) {
-  .recharge-form-area  { padding: 40px 6%; }
-  .recharge-input-wrap { max-width: 100%; }
-  .form-container h3   { font-size: 22px; }
+/* Override the common Input component to look clean */
+.recharge-input-wrap input,
+.recharge-input-wrap .input-field {
+  width: 100%;
+  border: 1.5px solid #e0d8d8;
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  letter-spacing: 0.5px;
 }
 
-@media (min-width: 576px) and (max-width: 991.98px) {
-  .recharge-form-area { padding: 60px 8%; }
+.recharge-input-wrap input:focus,
+.recharge-input-wrap .input-field:focus {
+  border-color: #ed4943;
+  box-shadow: 0 0 0 3px rgba(200, 48, 42, 0.08);
 }
 
+.recharge-input-wrap label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* API error message */
+.rf-api-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.82rem;
+  color: #c8302a;
+  background: #fff5f5;
+  border: 1px solid #fcd5d5;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 10px 0 0;
+  line-height: 1.5;
+}
+
+/* Proceed button */
+.rf-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #f6514c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: background 0.18s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.rf-submit-btn:hover:not(:disabled) {
+  background: #ef4747;
+  transform: translateY(-1px);
+}
+
+.rf-submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner inside button */
+.rf-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: rf-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes rf-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .recharge-form-area {
+    padding: 32px 20px 24px;
+  }
+}

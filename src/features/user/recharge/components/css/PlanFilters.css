@@ -1,0 +1,38 @@
+/* ── PlanFilters ──────────────────────────────────────────────────────────── */
+
+.pf-wrapper {
+  padding: 0 0 4px;
+}
+
+/* Tabs row */
+.pf-tabs-row {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.pf-tabs-row::-webkit-scrollbar { display: none; }
+
+.pf-tab {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: none;
+  background: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-bottom 0.15s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.pf-tab:hover { color: #c8302a; }
+
+.pf-tab--active {
+  color: #1a1a1a;
+  font-weight: 700;
+  border-bottom: 2px solid #1a1a1a;
+}

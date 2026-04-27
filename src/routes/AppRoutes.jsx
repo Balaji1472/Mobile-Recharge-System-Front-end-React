@@ -44,6 +44,7 @@ import UserNotificationsPage from "../features/user/notifications/jsx/Notificati
 import ActivePlansPage from "../features/user/activePlans/jsx/ActivePlansPage";
 import ChangePasswordPage from "../features/user/changePassword/jsx/ChangePasswordPage";
 import UserProfilePage from "../features/user/profile/jsx/UserProfilePage";
+import InvoicesPage from "../features/user/invoice/components/jsx/InvoicesPage";
 
 function AdminRoute({ children }) {
   const { user, accessToken } = useSelector((state) => state.auth);
@@ -120,6 +121,7 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
         <Route path="transactions"     element={<TransactionHistoryPage />} />
         <Route path="active-plans"     element={<ActivePlansPage />} />
         <Route path="notifications"    element={<UserNotificationsPage />} />
+        <Route path="invoices"         element={<InvoicesPage />} />
       </Route>
 
       <Route path="*" element={<Error />} />

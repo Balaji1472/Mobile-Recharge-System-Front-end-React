@@ -1,64 +1,97 @@
 import React, { useState } from 'react';
-import { useToast } from '../../hooks/useToast';
 import './OfferCard.css';
 
-export default function OfferCard({ image, altText, description, couponCode }) {
-  const { showToast } = useToast();
-  const [copied, setCopied] = useState(false);
+/* Banner accent colours cycling per card index */
+const BANNER_COLORS = ['#f05a5a'];
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(couponCode);
-      setCopied(true);
-      showToast(`Code "${couponCode}" copied to clipboard!`, 'success');
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      showToast('Failed to copy code.', 'error');
-    }
-  };
+export default function OfferCard({ offer, index = 0 }) {
+  const [sharing, setSharing] = useState(false);
 
+  const {
+    title,
+    discountType,
+    discountValue,
+    startDate,
+    endDate,
+  } = offer;
+
+  /* Format discount label */
+  const discountLabel =
+    discountType === 'PERCENTAGE'
+      ? `${discountValue}% OFF`
+      : `₹${discountValue} OFF`;
+
+  /* Format dates */
+  const fmt = (iso) =>
+    new Date(iso).toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+
+  const bannerColor = BANNER_COLORS[index % BANNER_COLORS.length];
+
+  /* Share handler */
   const handleShare = async () => {
-    const shareData = {
-      title: 'ReUp Exclusive Offer',
-      text: `Use code ${couponCode} — ${description}`,
-      url: window.location.href,
-    };
-
+    const shareText = `🎉 ${title} — Get ${discountLabel}! Valid till ${fmt(endDate)}.`;
     if (navigator.share) {
       try {
-        await navigator.share(shareData);
+        setSharing(true);
+        await navigator.share({
+          title: `ReUp — ${title}`,
+          text: shareText,
+          url: window.location.href,
+        });
       } catch {
-        // user cancelled share — do nothing
+        /* user cancelled */
+      } finally {
+        setSharing(false);
       }
     } else {
-      // Fallback: copy sharable text to clipboard
-      await navigator.clipboard.writeText(
-        `${shareData.text}\n${shareData.url}`
-      );
-      showToast('Offer link copied to clipboard!', 'success');
+      await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`);
     }
   };
 
   return (
     <div className="offer-card">
-      <img src={image} alt={altText} className="offer-img" />
+      {/* ── Coloured banner ── */}
+      <div className="offer-banner" style={{ backgroundColor: bannerColor }}>
+        <span className="offer-banner__discount">{discountLabel}</span>
+        <h3 className="offer-banner__title">{title}</h3>
+      </div>
+
+      {/* ── Card body ── */}
       <div className="offer-body">
-        <p>{description}</p>
-        <div className="coupon-wrapper">
+        {/* Discount type badge */}
+        <span className={`offer-type-badge offer-type-badge--${discountType.toLowerCase()}`}>
+          {discountType === 'PERCENTAGE' ? '% Percentage' : '₹ Flat Discount'}
+        </span>
+
+        {/* Validity */}
+        <div className="offer-validity">
+          <div className="offer-validity__item">
+            <span className="offer-validity__label">From</span>
+            <span className="offer-validity__value">{fmt(startDate)}</span>
+          </div>
+          <div className="offer-validity__divider" />
+          <div className="offer-validity__item">
+            <span className="offer-validity__label">Until</span>
+            <span className="offer-validity__value">{fmt(endDate)}</span>
+          </div>
+        </div>
+
+        {/* Active pill + share */}
+        <div className="offer-footer">
+          <span className="offer-active-pill">
+            <i className="fa-solid fa-circle-check" />
+            Active
+          </span>
           <button
-            className={`coupon-pill ${copied ? 'copied' : ''}`}
-            onClick={handleCopy}
-            title="Click to copy code"
-          >
-            <i className={`fa-solid ${copied ? 'fa-check' : 'fa-copy'}`}></i>
-            <span>{copied ? 'Copied!' : couponCode}</span>
-          </button>
-          <button
-            className="share-btn"
+            className={`share-btn ${sharing ? 'share-btn--sharing' : ''}`}
             onClick={handleShare}
             title="Share Offer"
           >
-            <i className="fa-solid fa-share-nodes"></i>
+            <i className="fa-solid fa-share-nodes" />
           </button>
         </div>
       </div>

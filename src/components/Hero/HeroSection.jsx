@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setMobileNumber, lookupPlans } from '../../features/user/recharge/slice/rechargeSlice';
+import api from '../../api/axios';
 import airtelLogo from '../../assets/operators/airtel-logo.webp';
 import jioLogo from '../../assets/operators/jio-logo.webp';
 import viLogo from '../../assets/operators/VI-logo.webp';
@@ -40,6 +44,7 @@ const OPERATORS = [
   },
 ];
 
+// ─── Operator Carousel — unchanged ────────────────────────────────────────────
 function OperatorCarousel() {
   const [current, setCurrent] = useState(0);
   const intervalRef = useRef(null);
@@ -103,10 +108,16 @@ function OperatorCarousel() {
   );
 }
 
+// ─── Recharge Form — updated with validation + backend call ──────────────────
 function RechargeForm() {
-  const [mobile, setMobile] = useState('');
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+
+  const [mobile,   setMobile]   = useState('');
   const [operator, setOperator] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors,   setErrors]   = useState({});
+  const [loading,  setLoading]  = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const validate = () => {
     const errs = {};
@@ -121,14 +132,58 @@ function RechargeForm() {
     return errs;
   };
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
+    // 1. Client-side validation first
     const errs = validate();
-    setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+
+    setLoading(true);
+    setApiError('');
+
+    try {
+      // 2. Validate mobile + operator match with backend (public endpoint — no auth needed)
+      await api.post('/recharges/validate-quick-recharge', {
+        mobileNumber: mobile.trim(),
+        operatorName: operator,
+      });
+
+      // 3. Validation passed — set mobile in Redux
+      dispatch(setMobileNumber(mobile.trim()));
+
+      // 4. Fetch plans via existing thunk (sets step → 'plans' automatically on success)
+      const result = await dispatch(lookupPlans(mobile.trim())).unwrap();
+
+      if (result) {
+        // 5. Navigate to recharge page — RechargePage reads step from Redux and shows PlansListStep
+        navigate('/recharge');
+      }
+
+    } catch (err) {
+      // Backend validation error (operator mismatch, number not found, etc.)
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        'Validation failed. Please check your details.';
+      setApiError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="recharge-card">
       <p className="recharge-label">Quick Recharge</p>
+
+      {/* API error message */}
+      {apiError && (
+        <div className="field-error-sm" style={{ marginBottom: '8px', color: '#e41b23' }}>
+          {apiError}
+        </div>
+      )}
 
       <div className="recharge-field">
         <input
@@ -139,6 +194,7 @@ function RechargeForm() {
           onChange={(e) => {
             setMobile(e.target.value.replace(/\D/g, ''));
             setErrors((p) => ({ ...p, mobile: '' }));
+            setApiError('');
           }}
         />
         {errors.mobile && <span className="field-error-sm">{errors.mobile}</span>}
@@ -150,24 +206,33 @@ function RechargeForm() {
           onChange={(e) => {
             setOperator(e.target.value);
             setErrors((p) => ({ ...p, operator: '' }));
+            setApiError('');
           }}
         >
           <option value="">Select Operator</option>
-          <option value="airtel">Airtel</option>
-          <option value="jio">Jio</option>
-          <option value="vi">VI (Vodafone Idea)</option>
-          <option value="bsnl">BSNL</option>
+          <option value="Airtel">Airtel</option>
+          <option value="Jio">Jio</option>
+          <option value="VI">VI (Vodafone Idea)</option>
+          <option value="BSNL">BSNL</option>
         </select>
         {errors.operator && <span className="field-error-sm">{errors.operator}</span>}
       </div>
 
-      <button className="btn-proceed" onClick={handleProceed}>
-        Proceed &nbsp;<i className="fa-solid fa-arrow-right"></i>
+      <button
+        className="btn-proceed"
+        onClick={handleProceed}
+        disabled={loading}
+      >
+        {loading
+          ? <><i className="fa-solid fa-spinner fa-spin"></i> Checking...</>
+          : <>Proceed &nbsp;<i className="fa-solid fa-arrow-right"></i></>
+        }
       </button>
     </div>
   );
 }
 
+// ─── HeroSection — unchanged ──────────────────────────────────────────────────
 export default function HeroSection() {
   return (
     <section className="hero-section">
