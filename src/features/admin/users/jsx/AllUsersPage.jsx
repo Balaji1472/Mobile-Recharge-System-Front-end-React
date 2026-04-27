@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadUsers, changeUserStatus } from '../slice/usersSlice';
 import { useToast } from '../../../../hooks/useToast';
 import { Button, Spinner } from '../../../../components/common';
+import DataTable from '../../../../components/common/DataTable/DataTable'; // ← reusable table
 import '../css/AllUsersPage.css';
 
 /* ── helpers ── */
@@ -13,13 +14,16 @@ function formatDate(dateStr) {
   });
 }
 
+/* ── Status Badge ── */
 function StatusBadge({ status }) {
-  const cls = status === 'ACTIVE'  ? 'um-badge--active'
-            : status === 'BLOCKED' ? 'um-badge--blocked'
-            : 'um-badge--inactive';
+  const cls =
+    status === 'ACTIVE'  ? 'um-badge--active'
+    : status === 'BLOCKED' ? 'um-badge--blocked'
+    : 'um-badge--inactive';
   return <span className={`um-badge ${cls}`}>{status}</span>;
 }
 
+/* ── Detail Row (used inside modal only) ── */
 function DetailRow({ icon, label, value }) {
   return (
     <div className="um-detail-row">
@@ -32,15 +36,12 @@ function DetailRow({ icon, label, value }) {
   );
 }
 
-const ITEMS_PER_PAGE = 8;
-
-
 /* ─────────────────────────────────────────
-   View / Block modal
+   View / Block modal  (unchanged logic)
 ───────────────────────────────────────── */
 function ViewUserModal({ user, onClose }) {
-  const dispatch    = useDispatch();
-  const { toast }   = useToast();
+  const dispatch           = useDispatch();
+  const { toast }          = useToast();
   const { statusUpdating } = useSelector((state) => state.users);
 
   if (!user) return null;
@@ -54,7 +55,7 @@ function ViewUserModal({ user, onClose }) {
     if (changeUserStatus.fulfilled.match(result)) {
       toast(
         isBlocked ? 'User unblocked successfully' : 'User blocked successfully',
-        'success'
+        'success',
       );
       onClose();
     } else {
@@ -95,7 +96,6 @@ function ViewUserModal({ user, onClose }) {
 
           <hr className="um-modal-divider" />
 
-          {/* Info rows */}
           <div className="um-detail-grid">
             <DetailRow icon="fa-envelope"     label="Email"   value={user.email} />
             <DetailRow icon="fa-phone"        label="Mobile"  value={user.mobileNumber} />
@@ -104,14 +104,13 @@ function ViewUserModal({ user, onClose }) {
               label="Gender"
               value={user.gender ? user.gender.charAt(0) + user.gender.slice(1).toLowerCase() : '—'}
             />
-            <DetailRow icon="fa-user-tag"     label="Role"    value={user.role} />
-            <DetailRow icon="fa-calendar"     label="Joined"  value={formatDate(user.created_at)} />
-            <DetailRow icon="fa-circle-check" label="Status"  value={user.status} />
+            <DetailRow icon="fa-user-tag"     label="Role"   value={user.role} />
+            <DetailRow icon="fa-calendar"     label="Joined" value={formatDate(user.created_at)} />
+            <DetailRow icon="fa-circle-check" label="Status" value={user.status} />
           </div>
 
           <hr className="um-modal-divider" />
 
-          {/* Actions */}
           <div className="um-modal-actions">
             <button className="um-btn-cancel" onClick={onClose}>Close</button>
             <Button
@@ -132,9 +131,74 @@ function ViewUserModal({ user, onClose }) {
   );
 }
 
+/* ─────────────────────────────────────────
+   Column definitions for Users table
+───────────────────────────────────────── */
+function buildColumns({ blockingId, onView, onQuickBlock }) {
+  return [
+    {
+      key: 'fullName',
+      label: 'Name',
+      sortable: true,
+      render: (val) => <span className="um-td-name">{val || '—'}</span>,
+    },
+    {
+      key: 'email',
+      label: 'Email',
+      sortable: true,
+      render: (val) => <span className="um-td-email">{val || '—'}</span>,
+    },
+    {
+      key: 'mobileNumber',
+      label: 'Phone',
+      sortable: false,
+      render: (val) => val || '—',
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      sortable: true,
+      render: (val) => <StatusBadge status={val} />,
+    },
+    {
+      key: 'created_at',
+      label: 'Joined Date',
+      sortable: true,
+      isTimestamp: true,       // ← latest joined shown first by default
+      render: (val) => formatDate(val),
+    },
+    {
+      key: '_actions',
+      label: 'Actions',
+      width: '160px',
+      align: 'center',
+      render: (_, row) => (
+        <div className="um-action-btns">
+          {/* View */}
+          <button className="um-btn-view" onClick={() => onView(row)}>
+            <i className="fa-solid fa-eye"></i>
+            View
+          </button>
+
+          {/* Block / Unblock */}
+          <Button
+            variant={row.status === 'BLOCKED' ? 'primary' : 'danger'}
+            isLoading={blockingId === row.userId}
+            onClick={() => onQuickBlock(row)}
+          >
+            {blockingId !== row.userId && (
+              <i className={`fa-solid ${row.status === 'BLOCKED' ? 'fa-circle-check' : 'fa-ban'} me-2`}></i>
+            )}
+            {row.status === 'BLOCKED' ? 'Unblock' : 'Block'}
+          </Button>
+        </div>
+      ),
+    },
+  ];
+}
 
 /* ─────────────────────────────────────────
-   Main page
+   Main Page
 ───────────────────────────────────────── */
 export default function AllUsersPage() {
   const dispatch  = useDispatch();
@@ -143,16 +207,15 @@ export default function AllUsersPage() {
   const { data: users, isLoading, isError, message } = useSelector((state) => state.users);
 
   const [search,       setSearch]       = useState('');
-  const [page,         setPage]         = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [blockingId,   setBlockingId]   = useState(null); // tracks which row button is loading
+  const [blockingId,   setBlockingId]   = useState(null);
 
   /* ── fetch on mount ── */
   useEffect(() => {
     dispatch(loadUsers());
   }, [dispatch]);
 
-  /* ── search filter ── */
+  /* ── client-side search filter (lives on page, not in DataTable) ── */
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return users;
@@ -160,18 +223,11 @@ export default function AllUsersPage() {
       (u) =>
         u.fullName?.toLowerCase().includes(q) ||
         u.email?.toLowerCase().includes(q) ||
-        u.mobileNumber?.includes(q)
+        u.mobileNumber?.includes(q),
     );
   }, [users, search]);
 
-  /* ── reset page on search change ── */
-  useEffect(() => { setPage(1); }, [search]);
-
-  /* ── pagination ── */
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const paginated  = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-
-  /* ── inline block / unblock from table row ── */
+  /* ── inline block / unblock handler ── */
   const handleQuickBlock = async (user) => {
     const newStatus = user.status === 'BLOCKED' ? 'ACTIVE' : 'BLOCKED';
     setBlockingId(user.userId);
@@ -181,7 +237,7 @@ export default function AllUsersPage() {
     if (changeUserStatus.fulfilled.match(result)) {
       toast(
         newStatus === 'BLOCKED' ? 'User blocked successfully' : 'User unblocked successfully',
-        'success'
+        'success',
       );
     } else {
       toast(result.payload || 'Failed to update status', 'error');
@@ -189,6 +245,18 @@ export default function AllUsersPage() {
 
     setBlockingId(null);
   };
+
+  /* ── columns — rebuild only when blockingId changes (for loading state) ── */
+  const columns = useMemo(
+    () =>
+      buildColumns({
+        blockingId,
+        onView:       (row) => setSelectedUser(row),
+        onQuickBlock: handleQuickBlock,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [blockingId],
+  );
 
   return (
     <div>
@@ -214,7 +282,7 @@ export default function AllUsersPage() {
 
           <hr className="um-card-divider" />
 
-          {/* Search */}
+          {/* Search — stays on the page, not inside DataTable */}
           <div className="um-search-wrap">
             <i className="fa-solid fa-magnifying-glass um-search-icon"></i>
             <input
@@ -231,15 +299,7 @@ export default function AllUsersPage() {
             )}
           </div>
 
-          {/* Loading */}
-          {isLoading && (
-            <div className="um-state-row">
-              <Spinner size="md" />
-              <span>Loading users...</span>
-            </div>
-          )}
-
-          {/* Error */}
+          {/* Error state */}
           {isError && !isLoading && (
             <div className="um-error-row">
               <i className="fa-solid fa-triangle-exclamation"></i>
@@ -247,103 +307,18 @@ export default function AllUsersPage() {
             </div>
           )}
 
-          {/* Table */}
-          {!isLoading && !isError && (
-            <>
-              {filtered.length === 0 ? (
-                <div className="um-empty">
-                  <i className="fa-solid fa-user-slash"></i>
-                  <p>No users found{search ? ` for "${search}"` : ''}.</p>
-                </div>
-              ) : (
-                <div className="um-table-wrap">
-                  <table className="um-table">
-                    <thead>
-                      <tr>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>PHONE</th>
-                        <th>STATUS</th>
-                        <th>JOINED DATE</th>
-                        <th>ACTIONS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {paginated.map((user) => (
-                        <tr key={user.userId}>
-                          <td className="um-td-name">{user.fullName || '—'}</td>
-                          <td className="um-td-email">{user.email || '—'}</td>
-                          <td>{user.mobileNumber || '—'}</td>
-                          <td><StatusBadge status={user.status} /></td>
-                          <td>{formatDate(user.created_at)}</td>
-                          <td>
-                            <div className="um-action-btns">
-                              {/* View */}
-                              <button
-                                className="um-btn-view"
-                                onClick={() => setSelectedUser(user)}
-                              >
-                                <i className="fa-solid fa-eye"></i>
-                                View
-                              </button>
-
-                              {/* Block / Unblock */}
-                              <Button
-                                variant={user.status === 'BLOCKED' ? 'primary' : 'danger'}
-                                isLoading={blockingId === user.userId}
-                                onClick={() => handleQuickBlock(user)}
-                              >
-                                {blockingId !== user.userId && (
-                                  <i className={`fa-solid ${user.status === 'BLOCKED' ? 'fa-circle-check' : 'fa-ban'} me-2`}></i>
-                                )}
-                                {user.status === 'BLOCKED' ? 'Unblock' : 'Block'}
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="um-pagination">
-                  <button
-                    className="um-pg-btn"
-                    disabled={page === 1}
-                    onClick={() => setPage((p) => p - 1)}
-                  >
-                    <i className="fa-solid fa-chevron-left"></i>
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <button
-                      key={p}
-                      className={`um-pg-btn ${page === p ? 'um-pg-btn--active' : ''}`}
-                      onClick={() => setPage(p)}
-                    >
-                      {p}
-                    </button>
-                  ))}
-
-                  <button
-                    className="um-pg-btn"
-                    disabled={page === totalPages}
-                    onClick={() => setPage((p) => p + 1)}
-                  >
-                    <i className="fa-solid fa-chevron-right"></i>
-                  </button>
-
-                  <span className="um-pg-info">
-                    Showing {(page - 1) * ITEMS_PER_PAGE + 1}–
-                    {Math.min(page * ITEMS_PER_PAGE, filtered.length)} of {filtered.length}
-                  </span>
-                </div>
-              )}
-            </>
+          {/* ↓ DataTable — receives already-filtered data */}
+          {!isError && (
+            <DataTable
+              data={filtered}
+              columns={columns}
+              isLoading={isLoading}
+              emptyMessage={search ? `No users found for "${search}"` : 'No users found'}
+              rowKey="userId"
+              itemsPerPage={8}
+            />
           )}
+
         </div>
       </div>
 
