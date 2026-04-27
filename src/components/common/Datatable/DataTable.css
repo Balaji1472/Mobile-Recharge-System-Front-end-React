@@ -1,0 +1,211 @@
+/* ── DataTable.css ──────────────────────────────────────── */
+
+/* Wrapper */
+.dt-wrapper {
+  width: 100%;
+}
+
+/* ── Table ── */
+.dt-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--dt-border, #e5e7eb);
+}
+
+.dt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  color: var(--dt-text, #374151);
+  background: var(--dt-bg, #ffffff);
+}
+
+/* ── Header ── */
+.dt-table thead tr {
+  background: var(--dt-thead-bg, #f9fafb);
+  border-bottom: 2px solid var(--dt-border, #e5e7eb);
+}
+
+.dt-table th {
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dt-th-color, #6b7280);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.dt-th--sortable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dt-th--sortable:hover {
+  background: var(--dt-th-hover-bg, #f3f4f6);
+}
+
+.dt-th-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Sort Icons ── */
+.dt-sort-icon {
+  font-size: 0.7rem;
+  transition: color 0.15s;
+}
+
+.dt-sort-icon--idle {
+  color: var(--dt-sort-idle, #d1d5db);
+}
+
+.dt-sort-icon--active {
+  color: var(--dt-sort-active, #6366f1);
+}
+
+/* ── Body ── */
+.dt-table tbody tr {
+  border-bottom: 1px solid var(--dt-row-border, #f3f4f6);
+  transition: background 0.12s;
+}
+
+.dt-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.dt-table tbody tr:hover {
+  background: var(--dt-row-hover, #f9fafb);
+}
+
+.dt-td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Empty State ── */
+.dt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  color: var(--dt-empty-color, #9ca3af);
+  gap: 12px;
+}
+
+.dt-empty i {
+  font-size: 2.2rem;
+  opacity: 0.5;
+}
+
+.dt-empty p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Loader ── */
+.dt-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+}
+
+/* ── Footer ── */
+.dt-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 4px 4px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dt-count-text {
+  font-size: 0.8rem;
+  color: var(--dt-count-color, #9ca3af);
+  margin: 0;
+}
+
+.dt-count-text strong {
+  color: var(--dt-count-strong, #4b5563);
+  font-weight: 600;
+}
+
+/* ── Pagination ── */
+.dt-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dt-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--dt-page-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--dt-page-bg, #ffffff);
+  color: var(--dt-page-color, #374151);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dt-page-btn:hover:not(:disabled) {
+  background: var(--dt-page-hover-bg, #f3f4f6);
+  border-color: var(--dt-page-hover-border, #d1d5db);
+}
+
+.dt-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dt-page-btn--active {
+  background: var(--dt-page-active-bg, #f05a5a);
+  border-color: var(--dt-page-active-bg, #f05a5a);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.dt-page-btn--active:hover {
+  background: var(--dt-page-active-hover, #e03131) !important;
+  border-color: var(--dt-page-active-hover, #e03131) !important;
+}
+
+.dt-page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  font-size: 0.82rem;
+  color: var(--dt-count-color, #9ca3af);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .dt-table th,
+  .dt-td {
+    padding: 10px 10px;
+    font-size: 0.8rem;
+  }
+
+  .dt-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
