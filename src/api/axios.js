@@ -16,9 +16,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ─── Refresh Token State ────
+// ─── Refresh Token State ───────────────────────────────────────────────────────
 let isRefreshing = false;
-let failedQueue = []; // holds requests waiting while refresh is in progress
+let failedQueue = [];
 
 const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
@@ -31,26 +31,35 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
+// clear failedQueue before redirecting to prevent memory leak
 const clearSessionAndRedirect = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("auth_user");
+  failedQueue = [];
   window.location.href = "/login";
 };
 
 // ─── Response Interceptor ──────────────────────────────────────────────────────
 api.interceptors.response.use(
-  (response) => response, // pass through all successful responses untouched
+  (response) => response,
 
   async (error) => {
     const originalRequest = error.config;
 
-    // Only handle 401 — skip everything else and also prevent infinite retry
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    const isAuthEndpoint =
+      originalRequest.url.includes("/auth/login") ||
+      originalRequest.url.includes("/auth/register") ||
+      originalRequest.url.includes("/auth/refresh");
+
+    if (
+      error.response?.status !== 401 ||
+      originalRequest._retry ||
+      isAuthEndpoint
+    ) {
       return Promise.reject(error);
     }
 
-    // If refresh is already running, queue this request until it finishes
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
@@ -62,52 +71,50 @@ api.interceptors.response.use(
         .catch((err) => Promise.reject(err));
     }
 
-    // Mark request so it won't retry again on another 401
     originalRequest._retry = true;
     isRefreshing = true;
 
     const refreshToken = localStorage.getItem("refreshToken");
 
+   // reset isRefreshing and flush queue before redirecting
     if (!refreshToken) {
-      // No refresh token at all — go to login immediately
+      isRefreshing = false;
+      processQueue(error, null);
       clearSessionAndRedirect();
       return Promise.reject(error);
     }
 
     try {
-      // Call backend refresh endpoint
       const { data } = await axios.post(
         "http://localhost:8086/reup/auth/refresh",
         { refreshToken }
       );
 
-      const newAccessToken = data.accessToken;
+      const newAccessToken  = data.accessToken;
       const newRefreshToken = data.refreshToken;
 
-      // Save rotated tokens
-      localStorage.setItem("accessToken", newAccessToken);
+      localStorage.setItem("accessToken",  newAccessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
+      console.log("refresh token is generated" +newAccessToken);
 
-      // Update auth_user with latest info from refresh response
+      // only overwrite auth_user fields that exist in response
       const authUser = JSON.parse(localStorage.getItem("auth_user") || "{}");
       localStorage.setItem(
         "auth_user",
         JSON.stringify({
           ...authUser,
-          email: data.email,
-          fullName: data.fullName,
-          role: data.role,
+          ...(data.email    && { email:    data.email    }),
+          ...(data.fullName && { fullName: data.fullName }),
+          ...(data.role     && { role:     data.role     }),
         })
       );
-      // Unblock all queued requests with new token
+
       processQueue(null, newAccessToken);
 
-      // Retry the original failed request with new token
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return api(originalRequest);
 
     } catch (refreshError) {
-      // Refresh itself failed — clear session and redirect to login
       processQueue(refreshError, null);
       clearSessionAndRedirect();
       return Promise.reject(refreshError);
