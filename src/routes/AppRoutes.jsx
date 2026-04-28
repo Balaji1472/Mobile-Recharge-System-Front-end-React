@@ -60,12 +60,12 @@ function UserRoute({ children }) {
   return children;
 }
 
-export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
+export default function AppRoutes({ sidebarOpen, onSidebarClose, onNotFound }) {  
   const adminProps = { sidebarOpen, onSidebarClose };
 
   return (
     <Routes>
-      {/* Public routes */}
+      {/* Public routes - unchanged */}
       <Route path="/" element={<HomePage />} />
       <Route path="/recharge" element={<RechargePage />} />
       <Route path="/about" element={<AboutPage />} />
@@ -74,7 +74,7 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<RegisterForm />} />
 
-      {/* Persistent Admin Layout Wrapper */}
+      {/* Admin Layout */}
       <Route
         path="/admin"
         element={
@@ -85,7 +85,6 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
           </AdminRoute>
         }
       >
-        {/* Child routes */}
         <Route path="profile" element={<AdminProfilePage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="all-users" element={<AllUsersPage />} />
@@ -104,7 +103,7 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
         <Route path="notifications" element={<NotificationsPage />} />
       </Route>
 
-      {/* User dashboard layout wrapper */}
+      {/* User Layout */}
       <Route
         path="/user"
         element={
@@ -115,16 +114,16 @@ export default function AppRoutes({ sidebarOpen, onSidebarClose }) {
           </UserRoute>
         }
       >
-        <Route path="overview"         element={<UserOverviewPage />} />
-        <Route path="profile"          element={<UserProfilePage />} />
-        <Route path="change-password"  element={<ChangePasswordPage />} />
-        <Route path="transactions"     element={<TransactionHistoryPage />} />
-        <Route path="active-plans"     element={<ActivePlansPage />} />
-        <Route path="notifications"    element={<UserNotificationsPage />} />
-        <Route path="invoices"         element={<InvoicesPage />} />
+        <Route path="overview"        element={<UserOverviewPage />} />
+        <Route path="profile"         element={<UserProfilePage />} />
+        <Route path="change-password" element={<ChangePasswordPage />} />
+        <Route path="transactions"    element={<TransactionHistoryPage />} />
+        <Route path="active-plans"    element={<ActivePlansPage />} />
+        <Route path="notifications"   element={<UserNotificationsPage />} />
+        <Route path="invoices"        element={<InvoicesPage />} />
       </Route>
 
-      <Route path="*" element={<Error />} />
+      <Route path="*" element={<Error onNotFound={onNotFound} />} />  
     </Routes>
   );
 }

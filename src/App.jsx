@@ -10,28 +10,30 @@ import AppRoutes from "./routes/AppRoutes";
 
 function AppShell() {
   const location = useLocation();
-
   const isAdmin    = location.pathname.startsWith("/admin");
   const isUser     = location.pathname.startsWith("/user");
   const isRecharge = location.pathname.startsWith("/recharge");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [is404, setIs404] = useState(false);        
 
   const isDashboard      = isAdmin || isUser;
   const shouldShowFooter = !isDashboard && !isRecharge;
 
   return (
     <>
-      <Navbar
-        onSidebarToggle={() => setSidebarOpen((o) => !o)}
-        sidebarOpen={sidebarOpen}
-      />
+      {!is404 && (                                  
+        <Navbar
+          onSidebarToggle={() => setSidebarOpen((o) => !o)}
+          sidebarOpen={sidebarOpen}
+        />
+      )}
       <AppRoutes
         sidebarOpen={sidebarOpen}
         onSidebarClose={(val) => setSidebarOpen(val ?? false)}
+        onNotFound={setIs404}                       
       />
-      {shouldShowFooter && <Footer />}
+      {shouldShowFooter && !is404 && <Footer />}    
       <Toast />
-
       {isDashboard && sidebarOpen && (
         <div
           className="sidebar-overlay"

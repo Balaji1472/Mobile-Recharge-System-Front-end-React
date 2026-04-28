@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/common";
 import "./Error.css";
 
-const Error = () => {
+const Error = ({ onNotFound }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    onNotFound?.(true);
+    return () => onNotFound?.(false); 
+  }, []);
 
   return (
     <div className="error-page">
