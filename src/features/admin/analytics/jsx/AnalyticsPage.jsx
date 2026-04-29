@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadAnalytics, resetAnalytics } from '../slice/analyticsSlice';
 import { useToast } from '../../../../hooks/useToast';
+import AISummaryCard from '../../../summary/jsx/AISummaryCard';
 import '../css/AnalyticsPage.css';
 
 /** * Helper functions for formatting UI data */
@@ -103,6 +104,9 @@ export default function AnalyticsPage() {
               </div>
             </div>
           </>
+        )}
+        {!isLoading && !isError && data && (
+          <AISummaryCard role="admin" ready={true} />
         )}
       </div>
     </div>

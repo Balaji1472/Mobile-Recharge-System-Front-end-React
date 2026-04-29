@@ -23,7 +23,7 @@ const GENDER_OPTIONS = [
 
 export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
   const dispatch = useDispatch();
-  const { toast } = useToast(); // Renamed to match your hook definition
+  const { toast } = useToast(); 
 
   // Read from the userProfile slice
   const {
