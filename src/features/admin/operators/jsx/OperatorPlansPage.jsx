@@ -43,9 +43,6 @@ function StatusBadge({ active }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   MAIN PAGE
-══════════════════════════════════════════════════════ */
 export default function OperatorPlansPage({ sidebarOpen, onSidebarClose }) {
   const dispatch    = useDispatch();
   const { toast }   = useToast();

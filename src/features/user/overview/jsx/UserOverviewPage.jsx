@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadUserOverview } from "../slice/userOverviewSlice";
 import { Spinner } from "../../../../components/common";
 import { useToast } from "../../../../hooks/useToast";
+import AISummaryCard from "../../../summary/jsx/AISummaryCard";
 import "../css/UserOverviewPage.css";
 
-/* ── helpers ─────────────────────────────────────────── */
 function formatDate(dateStr) {
   if (!dateStr) return "—";
   return new Date(dateStr).toLocaleDateString("en-IN", {
@@ -65,9 +65,8 @@ function AccountStatusBadge({ status }) {
 
 export default function UserOverviewPage() {
   const dispatch = useDispatch();
-  const { toast } = useToast(); // Updated to match your hook definition
+  const { toast } = useToast(); 
 
-  // Pulling state from Redux
   const {
     data: overview,
     isLoading: loading,
@@ -79,14 +78,12 @@ export default function UserOverviewPage() {
     dispatch(loadUserOverview());
   }, [dispatch]);
 
-  // Handle side-effect for error toasts
   useEffect(() => {
     if (isError && error) {
       toast(error, "error");
     }
   }, [isError, error, toast]);
 
-  /* ── loading state ── */
   if (loading) {
     return (
       <div className="uo-page">
@@ -102,7 +99,6 @@ export default function UserOverviewPage() {
     );
   }
 
-  /* ── error state ── */
   if (isError && !overview) {
     return (
       <div className="uo-page">
@@ -251,6 +247,7 @@ export default function UserOverviewPage() {
           </div>
         </div>
       </div>
+       <AISummaryCard role="user" ready={!!overview} />
     </div>
   );
 }

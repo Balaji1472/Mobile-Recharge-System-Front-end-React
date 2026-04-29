@@ -121,10 +121,13 @@ function RechargeForm() {
 
   const validate = () => {
     const errs = {};
+    const indianRegex = /^[6-9]\d{9}$/;
+    const value = mobile.trim();
     if (!mobile.trim()) {
       errs.mobile = 'Mobile number is required';
-    } else if (!/^\d{10}$/.test(mobile.trim())) {
-      errs.mobile = 'Enter a valid 10-digit mobile number';
+    } 
+    else if (!indianRegex.test(value)) {
+      errs.mobile = 'Enter a valid mobile number';
     }
     if (!operator) {
       errs.operator = 'Please select an operator';
@@ -133,7 +136,6 @@ function RechargeForm() {
   };
 
   const handleProceed = async () => {
-    // 1. Client-side validation first
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -144,25 +146,20 @@ function RechargeForm() {
     setApiError('');
 
     try {
-      // 2. Validate mobile + operator match with backend (public endpoint — no auth needed)
       await api.post('/recharges/validate-quick-recharge', {
         mobileNumber: mobile.trim(),
         operatorName: operator,
       });
 
-      // 3. Validation passed — set mobile in Redux
       dispatch(setMobileNumber(mobile.trim()));
 
-      // 4. Fetch plans via existing thunk (sets step → 'plans' automatically on success)
       const result = await dispatch(lookupPlans(mobile.trim())).unwrap();
 
       if (result) {
-        // 5. Navigate to recharge page — RechargePage reads step from Redux and shows PlansListStep
         navigate('/recharge');
       }
 
     } catch (err) {
-      // Backend validation error (operator mismatch, number not found, etc.)
       const message =
         err?.response?.data?.message ||
         err?.response?.data?.error ||
@@ -178,7 +175,6 @@ function RechargeForm() {
     <div className="recharge-card">
       <p className="recharge-label">Quick Recharge</p>
 
-      {/* API error message */}
       {apiError && (
         <div className="field-error-sm" style={{ marginBottom: '8px', color: '#e41b23' }}>
           {apiError}
@@ -232,7 +228,6 @@ function RechargeForm() {
   );
 }
 
-// ─── HeroSection — unchanged ──────────────────────────────────────────────────
 export default function HeroSection() {
   return (
     <section className="hero-section">

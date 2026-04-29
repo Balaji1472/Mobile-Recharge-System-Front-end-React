@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAllUsers, updateUserStatus, fetchRoleCounts } from '../service/usersService';
 
-/* ── Thunks ── */
 export const loadUsers = createAsyncThunk('users/load', async (_, thunkAPI) => {
   try {
     return await fetchAllUsers();
@@ -15,7 +14,7 @@ export const changeUserStatus = createAsyncThunk(
   async ({ userId, status }, thunkAPI) => {
     try {
       await updateUserStatus(userId, status);
-      return { userId, status }; // return payload so fulfilled can update state
+      return { userId, status }; 
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || 'Failed to update status');
     }
@@ -30,7 +29,6 @@ export const loadRoleCounts = createAsyncThunk('users/loadRoleCounts', async (_,
   }
 });
 
-/* ── Slice ── */
 const usersSlice = createSlice({
   name: 'users',
   initialState: {

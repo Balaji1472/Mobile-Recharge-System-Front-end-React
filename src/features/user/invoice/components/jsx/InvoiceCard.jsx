@@ -1,10 +1,7 @@
 import React from 'react';
 import '../css/InvoiceCard.css';
 
-/**
- * InvoiceCard
- * Shows basic invoice info. Click anywhere or "View" → opens detail modal.
- */
+
 export default function InvoiceCard({ invoice, onView }) {
 
   const formatDate = (dateStr) => {

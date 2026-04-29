@@ -16,7 +16,7 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   
   const dropdownRef = useRef(null);
-  const navRef = useRef(null); // Ref for the whole nav to detect outside clicks
+  const navRef = useRef(null); 
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -31,14 +31,11 @@ export default function Navbar() {
     setDropdownOpen(false);
   };
 
-  // Close BOTH dropdown and mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {
-      // Close profile dropdown if clicking outside it
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
-      // Close mobile hamburger menu if clicking outside the nav area
       if (navRef.current && !navRef.current.contains(e.target)) {
         setMenuOpen(false);
       }

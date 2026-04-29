@@ -27,9 +27,6 @@ function getRoleMeta(roleName) {
 }
 
 
-/* ─────────────────────────────────────────
-   Main page
-───────────────────────────────────────── */
 export default function UserRolesPage() {
   const dispatch = useDispatch();
 

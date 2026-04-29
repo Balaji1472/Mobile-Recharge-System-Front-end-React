@@ -42,7 +42,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
 
   return (
     <>
-      {/* ── Mobile Sidebar Puller ── */}
+    {/* mobile sidebar puller */}
       {!isOpen && (
         <button 
           className="mobile-pull-handle d-lg-none" 
@@ -62,13 +62,7 @@ export default function AdminSidebar({ isOpen, onClose }) {
                 <small>Manage your platform</small>
               </div>
             )}
-            
-            {/* <button
-              className="sidebar-toggle d-none d-lg-flex"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`}></i>
-            </button> */}
+
 
             <button
               className="sidebar-toggle d-lg-none"

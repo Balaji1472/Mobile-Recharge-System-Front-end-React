@@ -6,7 +6,6 @@ import {
   toggleOperatorStatus,
 } from '../service/operatorsService';
 
-/* ── Thunks ── */
 
 export const loadOperators = createAsyncThunk(
   'operators/load',

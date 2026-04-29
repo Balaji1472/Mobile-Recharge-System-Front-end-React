@@ -5,7 +5,6 @@ import { useToast } from '../../../../hooks/useToast';
 import AISummaryCard from '../../../summary/jsx/AISummaryCard';
 import '../css/AnalyticsPage.css';
 
-/** * Helper functions for formatting UI data */
 const formatCurrency = (amount) => {
   if (amount === null || amount === undefined) return '₹0';
   const num = parseFloat(amount);
@@ -36,7 +35,6 @@ export default function AnalyticsPage() {
     };
   }, [dispatch, accessToken]);
 
-  // Handle errors via toast
   useEffect(() => {
     if (isError && message) {
       toast(message, 'error');

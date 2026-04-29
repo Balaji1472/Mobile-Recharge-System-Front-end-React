@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: "http://localhost:8086/reup",
 });
 
-// ─── Request Interceptor ───────────────────────────────────────────────────────
+// request interceptor
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -13,10 +13,10 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
-// ─── Refresh Token State ───────────────────────────────────────────────────────
+// refresh token 
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -31,7 +31,6 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// clear failedQueue before redirecting to prevent memory leak
 const clearSessionAndRedirect = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
@@ -40,7 +39,6 @@ const clearSessionAndRedirect = () => {
   window.location.href = "/login";
 };
 
-// ─── Response Interceptor ──────────────────────────────────────────────────────
 api.interceptors.response.use(
   (response) => response,
 
@@ -52,12 +50,16 @@ api.interceptors.response.use(
       originalRequest.url.includes("/auth/register") ||
       originalRequest.url.includes("/auth/refresh");
 
+    const isTokenExpiry =
+      error.response?.data?.error === "Token expired or invalid";
+
     if (
       error.response?.status !== 401 ||
+      !isTokenExpiry || 
       originalRequest._retry ||
       isAuthEndpoint
     ) {
-      return Promise.reject(error);
+      return Promise.reject(error); 
     }
 
     if (isRefreshing) {
@@ -76,7 +78,6 @@ api.interceptors.response.use(
 
     const refreshToken = localStorage.getItem("refreshToken");
 
-   // reset isRefreshing and flush queue before redirecting
     if (!refreshToken) {
       isRefreshing = false;
       processQueue(error, null);
@@ -87,33 +88,31 @@ api.interceptors.response.use(
     try {
       const { data } = await axios.post(
         "http://localhost:8086/reup/auth/refresh",
-        { refreshToken }
+        { refreshToken },
       );
 
-      const newAccessToken  = data.accessToken;
+      const newAccessToken = data.accessToken;
       const newRefreshToken = data.refreshToken;
 
-      localStorage.setItem("accessToken",  newAccessToken);
+      localStorage.setItem("accessToken", newAccessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
-      console.log("refresh token is generated" +newAccessToken);
+      console.log("refresh token is generated" + newAccessToken);
 
-      // only overwrite auth_user fields that exist in response
       const authUser = JSON.parse(localStorage.getItem("auth_user") || "{}");
       localStorage.setItem(
         "auth_user",
         JSON.stringify({
           ...authUser,
-          ...(data.email    && { email:    data.email    }),
+          ...(data.email && { email: data.email }),
           ...(data.fullName && { fullName: data.fullName }),
-          ...(data.role     && { role:     data.role     }),
-        })
+          ...(data.role && { role: data.role }),
+        }),
       );
 
       processQueue(null, newAccessToken);
 
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
       return api(originalRequest);
-
     } catch (refreshError) {
       processQueue(refreshError, null);
       clearSessionAndRedirect();
@@ -121,7 +120,7 @@ api.interceptors.response.use(
     } finally {
       isRefreshing = false;
     }
-  }
+  },
 );
 
 export default api;

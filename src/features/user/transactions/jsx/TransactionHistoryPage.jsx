@@ -5,7 +5,6 @@ import { Spinner } from '../../../../components/common';
 import { useToast } from '../../../../hooks/useToast';
 import '../css/TransactionHistoryPage.css';
 
-/* ── helpers ─────────────────────────────────────────── */
 function formatDate(dateStr) {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleDateString('en-IN', {

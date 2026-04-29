@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-// ── Public pages (unchanged) ──
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
@@ -10,16 +9,13 @@ import Error from "../pages/Error";
 import OffersPage from "../pages/OffersPage";
 import RechargePage from "../pages/RechargePage";
 
-// ── Auth feature ──
 import LoginForm from "../features/auth/components/jsx/LoginForm";
 import RegisterForm from "../features/auth/components/jsx/RegisterForm";
 
-// ── Shared layout / guard ──
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminLayout from "../components/AdminLayout/AdminLayout";
 import UserLayout from "../components/UserLayout/UserLayout";
 
-// ── Admin features ──
 import AdminProfilePage from "../features/admin/profile/jsx/AdminProfilePage";
 import AnalyticsPage from "../features/admin/analytics/jsx/AnalyticsPage";
 import AllUsersPage from "../features/admin/users/jsx/AllUsersPage";
@@ -37,7 +33,6 @@ import OfferMappingPage from "../features/admin/offers/jsx/OfferMappingPage";
 import AuditLogsPage from "../features/admin/auditLogs/jsx/AuditLogsPage";
 import NotificationsPage from "../features/admin/notifications/jsx/NotificationsPage";
 
-// ── User features ──
 import UserOverviewPage from "../features/user/overview/jsx/UserOverviewPage";
 import TransactionHistoryPage from "../features/user/transactions/jsx/TransactionHistoryPage";
 import UserNotificationsPage from "../features/user/notifications/jsx/NotificationsPage";

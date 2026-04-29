@@ -4,7 +4,6 @@ import './DataTable.css';
 
 const ITEMS_PER_PAGE = 10;
 
-/* ── Pagination ── */
 function Pagination({ page, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -59,7 +58,6 @@ function Pagination({ page, totalPages, onPageChange }) {
   );
 }
 
-/* ── Sort Icon ── */
 function SortIcon({ direction }) {
   if (!direction) return <i className="fa-solid fa-sort dt-sort-icon dt-sort-icon--idle"></i>;
   return direction === 'asc'
@@ -67,27 +65,7 @@ function SortIcon({ direction }) {
     : <i className="fa-solid fa-sort-down dt-sort-icon dt-sort-icon--active"></i>;
 }
 
-/**
- * DataTable — Generic reusable table component
- *
- * @prop {Array}   data            — Array of row objects
- * @prop {Array}   columns         — Column definitions (see below)
- * @prop {boolean} isLoading       — Show spinner when true
- * @prop {string}  emptyMessage    — Message when no rows (default: "No data found")
- * @prop {number}  itemsPerPage    — Rows per page (default: 10)
- * @prop {string}  rowKey          — Field to use as row key (default: "id")
- *
- * Column definition shape:
- * {
- *   key: string,           // field name in data object (used for sorting)
- *   label: string,         // column header text
- *   sortable?: boolean,    // enable sort on this column (default: false)
- *   isTimestamp?: boolean, // if true, sorts as Date and defaults to descending (latest first)
- *   width?: string,        // optional CSS width e.g. "120px"
- *   align?: 'left' | 'center' | 'right',  // cell alignment (default: left)
- *   render?: (value, row) => ReactNode,   // custom cell renderer
- * }
- */
+
 export default function DataTable({
   data = [],
   columns = [],
@@ -96,21 +74,19 @@ export default function DataTable({
   itemsPerPage = ITEMS_PER_PAGE,
   rowKey = 'id',
 }) {
-  // Find first timestamp column to default sort by it (latest first)
+  // find first timestamp column to default sort by it (latest first)
   const defaultSortCol = columns.find((c) => c.isTimestamp);
 
   const [sortKey, setSortKey] = useState(defaultSortCol?.key || null);
   const [sortDir, setSortDir] = useState(defaultSortCol ? 'desc' : null);
   const [page, setPage] = useState(1);
 
-  /* ── Sorting ── */
   const handleSort = (col) => {
     if (!col.sortable) return;
     if (sortKey === col.key) {
       setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortKey(col.key);
-      // Timestamp columns default to desc (latest first), others to asc
       setSortDir(col.isTimestamp ? 'desc' : 'asc');
     }
     setPage(1);
@@ -122,17 +98,17 @@ export default function DataTable({
     return [...data].sort((a, b) => {
       let aVal = a[sortKey];
       let bVal = b[sortKey];
-      // Date comparison
+      // date comparison
       if (col?.isTimestamp) {
         aVal = aVal ? new Date(aVal).getTime() : 0;
         bVal = bVal ? new Date(bVal).getTime() : 0;
         return sortDir === 'asc' ? aVal - bVal : bVal - aVal;
       }
-      // Numeric comparison
+      // numeric comparison
       if (typeof aVal === 'number' && typeof bVal === 'number') {
         return sortDir === 'asc' ? aVal - bVal : bVal - aVal;
       }
-      // String comparison
+      // string comparison
       aVal = String(aVal ?? '').toLowerCase();
       bVal = String(bVal ?? '').toLowerCase();
       if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
@@ -141,7 +117,6 @@ export default function DataTable({
     });
   }, [data, sortKey, sortDir, columns]);
 
-  /* ── Pagination ── */
   const totalPages = Math.ceil(sorted.length / itemsPerPage);
   const paginated = sorted.slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const startItem = sorted.length === 0 ? 0 : (page - 1) * itemsPerPage + 1;
@@ -203,7 +178,6 @@ export default function DataTable({
 
           <div className="dt-footer">
             <p className="dt-count-text">
-              {/* Showing <strong>{startItem}–{endItem}</strong> of <strong>{sorted.length}</strong> records */}
             </p>
             <Pagination page={page} totalPages={totalPages} onPageChange={(p) => { setPage(p); }} />
           </div>

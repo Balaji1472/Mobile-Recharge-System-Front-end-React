@@ -88,7 +88,7 @@ function buildColumns(onViewLog) {
     {
       key: 'entityName',
       label: 'Entity Name',
-      sortable: false,           // ← sorting is now done by the backend (timestamp,desc)
+      sortable: false,           
       render: (val) => <span className="al-entity-name">{val}</span>,
     },
     {
@@ -125,7 +125,7 @@ function buildColumns(onViewLog) {
     {
       key: 'timestamp',
       label: 'Timestamp',
-      sortable: false,           // backend always returns latest-first via sort=timestamp,desc
+      sortable: false,           
       render: (val) => <span className="al-timestamp">{formatDateTime(val)}</span>,
     },
     {
@@ -250,7 +250,7 @@ export default function AuditLogsPage() {
   const { toast } = useToast();
 
   const {
-    data: logs,          // always a plain array from slice (content[] extracted)
+    data: logs,          
     totalElements,
     totalPages,
     currentPage,

@@ -136,6 +136,7 @@
   padding: 11px 28px;
   font-size: 0.88rem;
   font-weight: 700;
+  width: fit-content;
   cursor: pointer;
   font-family: var(--font);
   transition: background 0.2s, transform 0.15s;

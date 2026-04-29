@@ -13,12 +13,11 @@ const GENDER_OPTIONS = [
   { label: "Male", value: "MALE" },
   { label: "Female", value: "FEMALE" },
   { label: "Other", value: "OTHER" },
-  { label: "Prefer not to say", value: "PREFER_NOT_TO_SAY" },
 ];
 
 export default function AdminProfilePage() {
   const dispatch = useDispatch();
-  const { showToast } = useToast();
+  const { toast } = useToast();
 
   // Select state from the adminProfile slice
   const {
@@ -44,9 +43,9 @@ export default function AdminProfilePage() {
   // Handle error messages from Redux state
   useEffect(() => {
     if (isError && message) {
-      showToast(message, "error");
+      toast(message, "error");
     }
-  }, [isError, message, showToast]);
+  }, [isError, message, toast]);
 
   const initials = user?.fullName
     ? user.fullName
@@ -77,7 +76,7 @@ export default function AdminProfilePage() {
         }),
       ).unwrap();
 
-      showToast("Profile updated successfully!", "success");
+      toast("Profile updated successfully!", "success");
       setShowModal(false);
     } catch (err) {
       // Error is handled by the thunk, but we catch it here to stop the 'saving' spinner

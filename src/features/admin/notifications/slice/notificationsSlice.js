@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAllNotifications } from '../service/notificationsService';
 
-// Thunk for fetching all notifications
 export const loadNotifications = createAsyncThunk(
   'adminNotifications/load', 
   async (_, thunkAPI) => {
     try { 
       return await fetchAllNotifications(); 
     } catch (err) { 
-      // Extracts error message from the response or uses a fallback
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || 'Failed to load notifications'
       ); 

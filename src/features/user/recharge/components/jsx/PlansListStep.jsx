@@ -11,11 +11,6 @@ import PlanCard from './PlanCard';
 import PlanFilters from './PlanFilters';
 import '../css/PlansListStep.css';
 
-/**
- * PlansListStep
- * Shown when step === 'plans' (right panel).
- * Left sidebar (mobile number + change) is handled by RechargePage.
- */
 export default function PlansListStep() {
   const dispatch = useDispatch();
   const plans = useSelector(selectPlans);
@@ -25,12 +20,10 @@ export default function PlansListStep() {
   const filteredPlans = useMemo(() => {
     let result = plans;
 
-    // Filter by categoryName from API
     if (activeCategory !== 'ALL') {
       result = result.filter((p) => p.categoryName === activeCategory);
     }
 
-    // Filter by search query
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(

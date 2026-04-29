@@ -5,7 +5,6 @@ import { useToast } from "../../../../hooks/useToast";
 import { loadRefunds } from "../slice/transactionsSlice";
 import "../css/RefundsPage.css";
 
-/* ── helpers ─────────────────────────────────────────── */
 function formatDate(dateStr) {
   if (!dateStr) return "—";
   return new Date(dateStr).toLocaleDateString("en-IN", {

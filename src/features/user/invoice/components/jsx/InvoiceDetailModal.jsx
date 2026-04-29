@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import '../css/InvoiceDetailModal.css';
 
-/**
- * InvoiceDetailModal
- * Full invoice detail popup. Handles PDF download via browser print.
- */
 export default function InvoiceDetailModal({ invoice, onClose }) {
   const sheetRef = useRef(null);
 

@@ -10,7 +10,6 @@ import { Spinner } from '../../../../components/common';
 import { useToast } from '../../../../hooks/useToast';
 import '../css/NotificationsPage.css';
 
-/* ── helpers ─────────────────────────────────────────── */
 function formatDateTime(dateStr) {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleString('en-IN', {
@@ -29,7 +28,6 @@ function getTypeStyle(type) {
   }
 }
 
-/* ── Single Notification Card ────────────────────────── */
 function NotificationCard({ notification, onMarkRead, marking }) {
   const { icon, color } = getTypeStyle(notification.type);
   const isRead = notification.readStatus;

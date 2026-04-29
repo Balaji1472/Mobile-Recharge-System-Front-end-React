@@ -4,7 +4,6 @@ import {
   fetchInvoiceById,
 } from "../service/invoiceService";
 
-// ─── Thunks ───────────────────────────────────────────────────────────────────
 
 export const loadMyInvoices = createAsyncThunk(
   "invoice/loadMyInvoices",
@@ -34,14 +33,12 @@ export const loadInvoiceById = createAsyncThunk(
   }
 );
 
-// ─── Slice ────────────────────────────────────────────────────────────────────
 
 const initialState = {
   invoices: [],
   loading: false,
   error: null,
 
-  // The invoice currently open in the detail modal (full object)
   selectedInvoice: null,
   selectedLoading: false,
   selectedError: null,
@@ -52,7 +49,6 @@ const invoiceSlice = createSlice({
   initialState,
   reducers: {
     setSelectedInvoice(state, action) {
-      // Set from the list (card click — uses already-loaded data)
       state.selectedInvoice = action.payload;
       state.selectedError = null;
     },
@@ -66,7 +62,6 @@ const invoiceSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Load all invoices
     builder
       .addCase(loadMyInvoices.pending, (state) => {
         state.loading = true;
@@ -107,7 +102,6 @@ export const {
 
 export default invoiceSlice.reducer;
 
-// ─── Selectors ────────────────────────────────────────────────────────────────
 export const selectInvoices        = (state) => state.invoice.invoices;
 export const selectInvoicesLoading = (state) => state.invoice.loading;
 export const selectInvoicesError   = (state) => state.invoice.error;

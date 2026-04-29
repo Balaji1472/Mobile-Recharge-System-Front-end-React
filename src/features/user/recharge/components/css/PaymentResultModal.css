@@ -172,21 +172,22 @@
   right: 1rem;
   background: transparent;
   border: none;
-  font-size: 1.5rem;
+  /* Font Awesome icons respond to font-size */
+  font-size: 1.5rem; 
   line-height: 1;
-  color: #6c757d; /* Muted gray */
+  color: black;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px; 
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .prm-close-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  color: #000;
+  color: #333; 
 }
 
 /* ── Mobile ── */

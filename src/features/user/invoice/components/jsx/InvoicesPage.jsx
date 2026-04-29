@@ -13,7 +13,6 @@ import InvoiceCard from './InvoiceCard';
 import InvoiceDetailModal from './InvoiceDetailModal';
 import '../css/InvoicesPage.css';
 
-// ── Skeleton loader ───────────────────────────────────────────────────────────
 function SkeletonGrid() {
   return (
     <div className="inv-page__skeleton-grid">
@@ -29,7 +28,6 @@ function SkeletonGrid() {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
 export default function InvoicesPage() {
   const dispatch        = useDispatch();
   const invoices        = useSelector(selectInvoices);
@@ -44,7 +42,6 @@ export default function InvoicesPage() {
   const handleView  = (inv) => dispatch(setSelectedInvoice(inv));
   const handleClose = ()    => dispatch(clearSelectedInvoice());
 
-  // Summary values
   const totalSpent = invoices.reduce((sum, inv) => sum + parseFloat(inv.amountPaid || 0), 0);
   const totalSpentFormatted = totalSpent.toLocaleString('en-IN', {
     minimumFractionDigits: 0,

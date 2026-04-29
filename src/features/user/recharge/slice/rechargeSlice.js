@@ -1,13 +1,12 @@
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchPlansByMobile,
   fetchConnectionId,
   initiateRecharge,
   verifyPayment,
+  cancelPayment,
 } from "../service/rechargeService";
 
-// ─── Thunks ───────────────────────────────────────────────────────────────────
 
 export const lookupPlans = createAsyncThunk(
   "recharge/lookupPlans",
@@ -22,19 +21,9 @@ export const lookupPlans = createAsyncThunk(
         "Failed to fetch plans. Please check the mobile number.";
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
-/**
- * submitRecharge
- *
- * Payload from UI: { planId, paymentMethod }
- * This thunk:
- *   1. Reads mobileNumber from Redux state
- *   2. Calls GET /recharges/connection to resolve connectionId
- *   3. Calls POST /recharges with { connectionId, planId, paymentMethod }
- *   4. Returns the order data (razorpayOrderId etc.) → PlanDetailModal opens Razorpay
- */
 export const submitRecharge = createAsyncThunk(
   "recharge/submitRecharge",
   async (payload, { getState, rejectWithValue }) => {
@@ -43,20 +32,18 @@ export const submitRecharge = createAsyncThunk(
 
       if (!mobileNumber) {
         return rejectWithValue(
-          "Mobile number is missing. Please go back and re-enter."
+          "Mobile number is missing. Please go back and re-enter.",
         );
       }
 
-      // Step 1 — resolve connectionId
       const connectionId = await fetchConnectionId(mobileNumber);
 
       if (!connectionId || connectionId <= 0) {
         return rejectWithValue(
-          "Could not find an active connection for this mobile number."
+          "Could not find an active connection for this mobile number.",
         );
       }
 
-      // Step 2 — initiate recharge and get Razorpay orderId
       const data = await initiateRecharge({
         connectionId,
         planId: payload.planId,
@@ -66,21 +53,12 @@ export const submitRecharge = createAsyncThunk(
       return data;
     } catch (err) {
       const message =
-        err?.response?.data?.message || "Recharge failed. Please try again.";
+        err?.response?.data?.message || "Can't recharge, Please login first";
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
-/**
- * confirmPayment
- *
- * Called after Razorpay popup fires its success handler.
- * Sends the 3 Razorpay params to POST /payments/verify.
- * Backend verifies HMAC signature and updates payment + recharge in DB.
- *
- * Payload: { razorpayOrderId, razorpayPaymentId, razorpaySignature, planName, validityDays, finalAmount }
- */
 export const confirmPayment = createAsyncThunk(
   "recharge/confirmPayment",
   async (payload, { rejectWithValue }) => {
@@ -90,7 +68,6 @@ export const confirmPayment = createAsyncThunk(
         razorpayPaymentId: payload.razorpayPaymentId,
         razorpaySignature: payload.razorpaySignature,
       });
-      // Return UI display data alongside verification success
       return {
         success: true,
         razorpayPaymentId: payload.razorpayPaymentId,
@@ -106,45 +83,42 @@ export const confirmPayment = createAsyncThunk(
         "Payment verification failed. Please contact support.";
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
-// ─── Slice ────────────────────────────────────────────────────────────────────
+export const cancelRecharge = createAsyncThunk(
+  "recharge/cancelRecharge",
+  async (razorpayOrderId, { rejectWithValue }) => {
+    try {
+      await cancelPayment(razorpayOrderId);
+    } catch (err) {
+      console.error("Failed to cancel payment on backend:", err);
+    }
+    return { success: false };
+  },
+);
+
 
 const initialState = {
-  // Step: 'input' | 'plans'
   step: "input",
   mobileNumber: "",
-
-  // Plans
   plans: [],
   plansLoading: false,
   plansError: null,
 
-  // Active filter tab
   activeCategory: "ALL",
-
-  // Search
   searchQuery: "",
-
-  // Modal
   selectedPlan: null,
 
-  // Payment method selected in PlanDetailModal
   paymentMethod: "UPI",
 
-  // Recharge submission
   rechargeLoading: false,
   rechargeError: null,
 
-  // Razorpay order data returned from POST /recharges
   razorpayOrderData: null,
 
-  // true while POST /payments/verify is in flight
   verifying: false,
 
-  // Final payment outcome set after backend verification completes
-  // Shape: { success: bool, razorpayPaymentId?, rechargeId, finalAmount, planName }
   paymentResult: null,
 };
 
@@ -258,6 +232,13 @@ const rechargeSlice = createSlice({
           errorMsg: action.payload,
         };
       });
+    // ── Cancel / Dismiss ──
+    builder.addCase(cancelRecharge.fulfilled, (state, action) => {
+      state.razorpayOrderData = null;
+      state.rechargeLoading = false;
+      state.verifying = false;
+      state.paymentResult = { success: false };
+    });
   },
 });
 
@@ -290,6 +271,7 @@ export const selectSelectedPlan = (state) => state.recharge.selectedPlan;
 export const selectPaymentMethod = (state) => state.recharge.paymentMethod;
 export const selectRechargeLoading = (state) => state.recharge.rechargeLoading;
 export const selectRechargeError = (state) => state.recharge.rechargeError;
-export const selectRazorpayOrderData = (state) => state.recharge.razorpayOrderData;
+export const selectRazorpayOrderData = (state) =>
+  state.recharge.razorpayOrderData;
 export const selectPaymentResult = (state) => state.recharge.paymentResult;
 export const selectVerifying = (state) => state.recharge.verifying;

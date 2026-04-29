@@ -46,9 +46,6 @@ function ConfirmUnmapModal({ mapping, onClose, onConfirm, loading }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   MAIN PAGE
-══════════════════════════════════════════════════════ */
 export default function OfferMappingPage() {
   const dispatch   = useDispatch();
   const { toast }  = useToast();

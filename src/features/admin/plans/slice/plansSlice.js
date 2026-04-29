@@ -14,7 +14,6 @@ import {
   toggleCategoryStatus,
 } from "../service/plansService";
 
-/* ── Thunks ── */
 
 export const loadPlans = createAsyncThunk("plans/load", async (_, thunkAPI) => {
   try {
@@ -26,7 +25,6 @@ export const loadPlans = createAsyncThunk("plans/load", async (_, thunkAPI) => {
   }
 });
 
-/* NEW — used by OperatorPlansPage when an operator filter is selected */
 export const loadPlansByOperator = createAsyncThunk(
   "plans/loadByOperator",
   async (operatorId, thunkAPI) => {

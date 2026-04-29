@@ -47,9 +47,6 @@ function StatusBadge({ status }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   ADD OPERATOR MODAL
-══════════════════════════════════════════════════════ */
 function AddOperatorModal({ onClose }) {
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -132,9 +129,6 @@ function AddOperatorModal({ onClose }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   EDIT OPERATOR MODAL
-══════════════════════════════════════════════════════ */
 function EditOperatorModal({ operator, onClose }) {
   const dispatch = useDispatch();
   const { toast } = useToast();

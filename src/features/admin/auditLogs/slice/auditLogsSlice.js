@@ -1,14 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchAuditLogs } from '../service/auditLogsService';
 
-/**
- * loadAuditLogs now accepts { page, size } so the page component
- * can request any page from the backend.
- *
- * Usage:
- *   dispatch(loadAuditLogs({ page: 0 }))   ← first page
- *   dispatch(loadAuditLogs({ page: 2 }))   ← third page
- */
+
 export const loadAuditLogs = createAsyncThunk(
   'auditLogs/load',
   async ({ page = 0, size = 10 } = {}, thunkAPI) => {
@@ -23,11 +16,11 @@ export const loadAuditLogs = createAsyncThunk(
 );
 
 const initialState = {
-  data: [],            // always a plain array — the content[] from Spring Page
-  totalElements: 0,    // total records in DB
-  totalPages: 0,       // total pages available
-  currentPage: 0,      // current 0-based page index
-  pageSize: 10,        // records per page
+  data: [],            
+  totalElements: 0,   
+  totalPages: 0,       
+  currentPage: 0,      
+  pageSize: 10,        
   isLoading: false,
   isError: false,
   message: '',

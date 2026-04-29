@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './OfferCard.css';
 
-/* Banner accent colours cycling per card index */
 const BANNER_COLORS = ['#f05a5a'];
 
 export default function OfferCard({ offer, index = 0 }) {
@@ -15,13 +14,11 @@ export default function OfferCard({ offer, index = 0 }) {
     endDate,
   } = offer;
 
-  /* Format discount label */
   const discountLabel =
     discountType === 'PERCENTAGE'
       ? `${discountValue}% OFF`
       : `₹${discountValue} OFF`;
 
-  /* Format dates */
   const fmt = (iso) =>
     new Date(iso).toLocaleDateString('en-IN', {
       day: '2-digit',
@@ -31,7 +28,6 @@ export default function OfferCard({ offer, index = 0 }) {
 
   const bannerColor = BANNER_COLORS[index % BANNER_COLORS.length];
 
-  /* Share handler */
   const handleShare = async () => {
     const shareText = `🎉 ${title} — Get ${discountLabel}! Valid till ${fmt(endDate)}.`;
     if (navigator.share) {

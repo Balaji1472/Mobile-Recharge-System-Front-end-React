@@ -38,13 +38,12 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    dispatch(loadUserProfile()); //
+    dispatch(loadUserProfile()); 
   }, [dispatch]);
 
-  // Handle Error Side Effects
   useEffect(() => {
     if (isError && message) {
-      toast(message, "error"); //
+      toast(message, "error"); 
       dispatch(reset());
     }
   }, [isError, message, toast, dispatch]);
@@ -70,7 +69,6 @@ export default function AdminProfilePage({ sidebarOpen, onSidebarClose }) {
     e.preventDefault();
     setSaving(true);
 
-    // Use the saveUserProfile thunk
     const result = await dispatch(
       saveUserProfile({
         fullName: form.fullName,

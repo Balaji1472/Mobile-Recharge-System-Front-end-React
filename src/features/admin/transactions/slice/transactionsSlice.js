@@ -4,7 +4,6 @@ import {
   fetchAllRefunds,
 } from "../service/transactionsService";
 
-/* ── Thunks ── */
 
 export const loadTransactions = createAsyncThunk(
   "transactions/load",
@@ -32,7 +31,6 @@ export const loadRefunds = createAsyncThunk(
   },
 );
 
-/* ── Slice ── */
 
 const transactionsSlice = createSlice({
   name: "transactions",

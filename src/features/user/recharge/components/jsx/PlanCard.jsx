@@ -3,11 +3,6 @@ import { useDispatch } from 'react-redux';
 import { setSelectedPlan } from '../../slice/rechargeSlice';
 import '../css/PlanCard.css';
 
-/**
- * PlanCard — reusable plan row item.
- * API shape: { planId, planName, price, validityDays, dataBenefits, smsBenefits,
- *              callBenefits, categoryId, categoryName, isActive, operatorId, operatorName }
- */
 export default function PlanCard({ plan, highlight = false, isTrending = false }) {
   const dispatch = useDispatch();
 

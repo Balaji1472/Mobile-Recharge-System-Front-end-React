@@ -36,9 +36,7 @@ function DetailRow({ icon, label, value }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   View / Block modal  (unchanged logic)
-───────────────────────────────────────── */
+//   View / Block modal  (unchanged logic)
 function ViewUserModal({ user, onClose }) {
   const dispatch           = useDispatch();
   const { toast }          = useToast();
@@ -131,9 +129,7 @@ function ViewUserModal({ user, onClose }) {
   );
 }
 
-/* ─────────────────────────────────────────
-   Column definitions for Users table
-───────────────────────────────────────── */
+// column def for tables
 function buildColumns({ blockingId, onView, onQuickBlock }) {
   return [
     {
@@ -197,9 +193,7 @@ function buildColumns({ blockingId, onView, onQuickBlock }) {
   ];
 }
 
-/* ─────────────────────────────────────────
-   Main Page
-───────────────────────────────────────── */
+// main page
 export default function AllUsersPage() {
   const dispatch  = useDispatch();
   const { toast } = useToast();
@@ -215,7 +209,7 @@ export default function AllUsersPage() {
     dispatch(loadUsers());
   }, [dispatch]);
 
-  /* ── client-side search filter (lives on page, not in DataTable) ── */
+  /* --- client-side search filter --- */
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return users;
