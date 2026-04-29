@@ -18,6 +18,7 @@ import userProfileReducer from "../features/user/profile/slice/userProfileSlice"
 import userTransactionsReducer from "../features/user/transactions/slice/userTransactionsSlice";
 import rechargeReducer from "../features/user/recharge/slice/rechargeSlice";
 import invoiceReducer from "../features/user/invoice/slice/invoiceSlice";
+import aiSummaryReducer from "../features/summary/slice/aiSummarySlice";
 
 export const store = configureStore({
   reducer: {
@@ -40,5 +41,6 @@ export const store = configureStore({
     userTransactions: userTransactionsReducer,
     recharge: rechargeReducer,
     invoice: invoiceReducer,
+    aiSummary: aiSummaryReducer,
   },
 });
